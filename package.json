@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Projeto desenvolvido no terceiro módulo do curso de back-end da Blue EdTech.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index",
-    "start": "node index"
+    "dev": "nodemon src/index",
+    "start": "node src/index"
   },
   "repository": {
     "type": "git",
