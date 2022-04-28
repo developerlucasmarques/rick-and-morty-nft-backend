@@ -1,0 +1,31 @@
+{
+  "name": "rick-and-morty-nft-backend",
+  "version": "1.0.0",
+  "description": "Projeto desenvolvido no terceiro módulo do curso de back-end da Blue EdTech.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlucasdev/rick-and-morty-nft-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlucasdev/rick-and-morty-nft-backend/issues"
+  },
+  "homepage": "https://github.com/mlucasdev/rick-and-morty-nft-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "mongoose": "^6.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
