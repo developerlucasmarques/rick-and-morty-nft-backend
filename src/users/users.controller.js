@@ -1,4 +1,4 @@
-import { createUserService } from "./users.service.js";
+import { createUserService, findAllUserService } from "./users.service.js";
 
 const createUserController = async (req, res) => {
   try {
@@ -16,7 +16,13 @@ const createUserController = async (req, res) => {
 };
 
 const findAllUserController = async (req, res) => {
-  res.send("find all");
+  const users = await findAllUserService();
+  if (users.length == 0) {
+    return res
+      .status(400)
+      .send({ message: "Não existem usuários cadastrados." });
+  }
+  res.status(200).send(users)
 };
 
 export { createUserController, findAllUserController };
