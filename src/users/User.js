@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema ({
     name: {
         type: String,
         required: true,
@@ -37,3 +37,5 @@ const UserSchema = new mongoose.Schema({
         required: true,
     }
 })
+
+export const User = mongoose.model('users', UserSchema);
