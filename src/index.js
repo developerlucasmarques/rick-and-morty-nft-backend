@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { connectDatabase } from "./database/database.js";
 import { userRouter } from "./users/users.routes.js";
+import { authRouter } from "./auth/auth.routes.js";
 
 const port = process.env.PORT || 3001;
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
