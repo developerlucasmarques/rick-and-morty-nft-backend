@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
-import {User} from "../models/User.js";
+import { findByEmailUserService } from "./users.service.js";
 
 const checkAllFields = (req, res, next) => {
   const { name, username, email, password, avatar } = req.body;
-  if (! name || !username || !email || !password || !avatar) {
+  if (!name || !username || !email || !password || !avatar) {
     return res.status(400).send({
       message:
         "Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'avatar'.",
@@ -14,10 +13,10 @@ const checkAllFields = (req, res, next) => {
 
 const verifyExistingUserByEmail = async (req, res, next) => {
   try {
-    const foundUser = await User.findOne({ email: req.body.email });
+    const foundUser = await findByEmailUserService(req.body.email);
     if (foundUser) {
       return res.status(400).send({
-        message: "Usuário existente",
+        message: "Esse usuário já existe!",
       });
     }
     next();

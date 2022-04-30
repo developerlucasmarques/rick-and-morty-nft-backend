@@ -1,13 +1,16 @@
-import {User} from '../models/User.js';
+import { User } from "../models/User.js";
+
+const findByEmailUserService = (email) => User.findOne({ email: email });
 
 const createUserService = (body) => User.create(body);
 
 const findAllUserService = () => User.find();
 
-const findByIdUserService = (idUser) => User.findById(idUser)
+const findByIdUserService = (idUser) => User.findById(idUser);
 
 export {
-    createUserService,
-    findAllUserService,
-    findByIdUserService,
-}
+  findByEmailUserService,
+  createUserService,
+  findAllUserService,
+  findByIdUserService,
+};
