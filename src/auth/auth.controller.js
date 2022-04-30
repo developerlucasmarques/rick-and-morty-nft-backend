@@ -1,3 +1,4 @@
+import {} from "dotenv/config";
 import { authGenerateTokenService, authLoginService } from "./auth.service.js";
 import bcrypt from "bcryptjs";
 
