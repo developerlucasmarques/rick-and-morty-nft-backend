@@ -1,6 +1,7 @@
 import {
   createCharacterService,
   findAllCharactersService,
+  findByIdCharacterService,
 } from "../services/characters.service.js";
 
 const createCharacterController = async (req, res) => {
@@ -19,4 +20,16 @@ const findAllCharactersController = async (req, res) => {
   }
 };
 
-export { findAllCharactersController, createCharacterController };
+const findByIdCharacterController = async (req, res) => {
+  try {
+    res.status(200).send(await findByIdCharacterService(req.params.id));
+  } catch (err) {
+    res.status(500).send({ error: `${err.message}` });
+  }
+};
+
+export {
+  findAllCharactersController,
+  createCharacterController,
+  findByIdCharacterController,
+};
