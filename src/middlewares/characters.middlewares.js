@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { findCharacterByNameService } from "../services/characters.service.js";
 
 const allCharacters = [];
 const allCharactersName = [];
@@ -51,4 +52,18 @@ const verifyCharacterTrue = (req, res, next) => {
   next();
 };
 
-export { verifyObjectBody, verifyCharacterTrue };
+const verifyCharacterExistInMongo = async (req, res, next) => {
+  try {
+    const character = await findCharacterByNameService(req.body.name);
+    if (character.name == req.body.name) {
+      return res
+        .status(400)
+        .send({ message: "Esse personagem já foi criado." });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({ error: `${err.message}` });
+  }
+};
+
+export { verifyObjectBody, verifyCharacterTrue, verifyCharacterExistInMongo };
