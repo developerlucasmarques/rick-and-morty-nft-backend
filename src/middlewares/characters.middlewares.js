@@ -37,7 +37,7 @@ const verifyObjectBody = (req, res, next) => {
   next();
 };
 
-const verifyCharacterExist = (req, res, next) => {
+const verifyCharacterTrue = (req, res, next) => {
   let boolean = false;
   for (let i of allCharactersName) {
     if (req.body.name == i) {
@@ -51,4 +51,4 @@ const verifyCharacterExist = (req, res, next) => {
   next();
 };
 
-export { verifyObjectBody, verifyCharacterExist };
+export { verifyObjectBody, verifyCharacterTrue };

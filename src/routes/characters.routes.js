@@ -4,7 +4,7 @@ import {
   findAllCharactersController,
 } from "../controller/characters.controller.js";
 import {
-  verifyCharacterExist,
+    verifyCharacterTrue,
   verifyObjectBody,
 } from "../middlewares/characters.middlewares.js";
 
@@ -13,7 +13,7 @@ export const router = express.Router();
 router.post(
   "/create",
   verifyObjectBody,
-  verifyCharacterExist,
+  verifyCharacterTrue,
   createCharacterController
 );
 router.get("/", findAllCharactersController);
