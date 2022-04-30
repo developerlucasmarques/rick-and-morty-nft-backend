@@ -1,5 +1,5 @@
 import {} from "dotenv/config";
-import { User } from "../users/User.js";
+import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
 
 const authLoginService = (email) => {

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {User} from "./User.js";
+import {User} from "../models/User.js";
 
 const checkAllFields = (req, res, next) => {
   const { name, username, email, password, avatar } = req.body;
