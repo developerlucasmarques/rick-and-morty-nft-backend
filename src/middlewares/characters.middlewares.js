@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
-import { findCharacterByNameService } from "../services/characters.service.js";
+import {
+  findByNameCharacterService,
+} from "../services/characters.service.js";
 
 const allCharacters = [];
 const allCharactersName = [];
@@ -54,7 +56,7 @@ const verifyCharacterTrue = (req, res, next) => {
 
 const verifyCharacterExistInMongo = async (req, res, next) => {
   try {
-    const character = await findCharacterByNameService(req.body.name);
+    const character = await findByNameCharacterService(req.body.name);
     if (character.name == req.body.name) {
       return res
         .status(400)
