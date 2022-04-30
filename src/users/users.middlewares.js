@@ -22,7 +22,7 @@ const verifyExistingUserByEmail = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    console.log(err.message);
+    return res.status(500).send(err.message);
   }
 };
 
