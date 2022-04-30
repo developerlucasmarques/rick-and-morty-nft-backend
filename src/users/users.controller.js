@@ -1,13 +1,17 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import { authGenerateTokenService } from "../auth/auth.service.js";
-import { createUserService, findAllUserService } from "./users.service.js";
+import {
+  createUserService,
+  findAllUserService,
+  findByIdUserService,
+} from "./users.service.js";
 
 dotenv.config();
 
 const createUserController = async (req, res) => {
   try {
     req.body.coins = 1000;
-    const { name, username, email, avatar, coins} = req.body
+    const { name, username, email, avatar, coins } = req.body;
     const user = await createUserService(req.body);
     if (!user) {
       return res.status(400).send({
@@ -47,4 +51,12 @@ const findAllUserController = async (req, res) => {
   }
 };
 
-export { createUserController, findAllUserController };
+const findBydIdUserController = async (req, res) => {
+  try {
+    res.status(200).send(await findByIdUserService(req.params.id));
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+export { createUserController, findAllUserController, findBydIdUserController };
