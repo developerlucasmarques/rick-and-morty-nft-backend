@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CharactersSchema = new mongoose.Scheama({
+const CharactersSchema = new mongoose.Schema({
   name: { type: String, required: true },
   image: { type: String, required: true },
 });
