@@ -1,4 +1,4 @@
-import { authLoginService } from "./auth.service.js";
+import { authGenerateTokenService, authLoginService } from "./auth.service.js";
 import bcrypt from "bcryptjs";
 
 const authLoginController = async (req, res) => {
@@ -13,7 +13,11 @@ const authLoginController = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).send({ message: "Senha inválida." });
     }
-    res.send(user);
+
+    const token = authGenerateTokenService(user.id);
+
+    res.status(200).send({ token });
+
   } catch (err) {
     res.status(500).send(err.message);
   }
