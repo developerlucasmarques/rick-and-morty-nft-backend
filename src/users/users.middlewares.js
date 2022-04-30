@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { findByEmailUserService } from "./users.service.js";
 
 const checkAllFields = (req, res, next) => {
@@ -25,4 +26,15 @@ const verifyExistingUserByEmail = async (req, res, next) => {
   }
 };
 
-export { checkAllFields, verifyExistingUserByEmail };
+const verifyExistingUserById = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).send({ message: "Id inválido!" });
+    }
+    next();
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+};
+
+export { checkAllFields, verifyExistingUserByEmail, verifyExistingUserById };
