@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
 import { authGenerateTokenService } from "../auth/auth.service.js";
 import { createUserService, findAllUserService } from "./users.service.js";
+
+dotenv.config();
 
 const createUserController = async (req, res) => {
   try {

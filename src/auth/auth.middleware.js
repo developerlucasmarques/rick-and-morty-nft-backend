@@ -1,6 +1,8 @@
-import {} from "dotenv/config";
+import dotenv from 'dotenv';
 import jwt from "jsonwebtoken";
 import { findByIdUserService } from "../users/users.service.js";
+
+dotenv.config();
 
 export const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;

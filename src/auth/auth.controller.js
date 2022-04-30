@@ -1,6 +1,8 @@
-import {} from "dotenv/config";
+import dotenv from 'dotenv';
 import { authGenerateTokenService, authLoginService } from "./auth.service.js";
 import bcrypt from "bcryptjs";
+
+dotenv.config();
 
 const authLoginController = async (req, res) => {
   try {

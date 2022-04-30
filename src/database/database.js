@@ -1,5 +1,7 @@
-import {} from "dotenv/config";
+import dotenv from 'dotenv';
 import mongoose from "mongoose";
+
+dotenv.config();
 
 export const connectDatabase = () => {
   console.log("Connecting to database...");
