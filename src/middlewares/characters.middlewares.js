@@ -29,8 +29,8 @@ const findAllCharactersApi = async () => {
 findAllCharactersApi();
 
 const verifyObjectBody = (req, res, next) => {
-  if (!req.body.name) {
-    return res.status(404).send({ message: "Envie o nome do personagem!" });
+  if (!req.body.name || !req.body.price) {
+    return res.status(404).send({ message: "Envie o nome e o valor da NFT!" });
   }
   next();
 };
