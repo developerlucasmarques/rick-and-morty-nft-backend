@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import fetch from "node-fetch";
-import { findByNameCharacterService } from "../services/characters.service.js";
+import { findByNameCharacterService, findByIdCharacterService } from "../services/characters.service.js";
 
 export const allCharacters = [];
 
@@ -70,6 +70,10 @@ const verifyIdExistInDb = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).send({ message: "Id inválido." });
+    }
+    const findId = await findByIdCharacterService(req.params.id)
+    if(!findId){
+      return res.status(404).send({ message: "Id não encontrado." })
     }
     next();
   } catch (err) {
