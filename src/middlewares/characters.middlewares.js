@@ -77,9 +77,19 @@ const verifyIdExistInDb = async (req, res, next) => {
   }
 };
 
+const verifyCommissionAmount = (req, res, next) => {
+  if (req.body.commission > 80 || req.body.commission < 0) {
+    return res
+      .status(400)
+      .send({ message: "Defina uma comissão entre 1% e 80%." });
+  }
+  next();
+};
+
 export {
   verifyObjectBody,
   verifyCharacterTrue,
   verifyCharacterExistInDb,
   verifyIdExistInDb,
+  verifyCommissionAmount,
 };

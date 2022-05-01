@@ -9,6 +9,7 @@ import {
 import {
   verifyCharacterExistInDb,
   verifyCharacterTrue,
+  verifyCommissionAmount,
   verifyIdExistInDb,
   verifyObjectBody,
 } from "../middlewares/characters.middlewares.js";
@@ -20,6 +21,7 @@ router.post(
   verifyObjectBody,
   verifyCharacterTrue,
   verifyCharacterExistInDb,
+  verifyCommissionAmount,
   createCharacterController
 );
 router.get("/", findAllCharactersController);
@@ -29,6 +31,7 @@ router.put(
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterTrue,
+  verifyCommissionAmount,
   updateByIdCharacterController
 );
 router.delete("/delete/:id", verifyIdExistInDb, deleteByIdCharacterController);
