@@ -13,7 +13,7 @@ import {
 } from "./users.middlewares.js";
 
 userRouter.post(
-  "/",
+  "/create",
   checkAllFields,
   verifyExistingUserByEmail,
   createUserController
