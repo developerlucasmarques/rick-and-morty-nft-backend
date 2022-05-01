@@ -33,7 +33,7 @@ const createUserController = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send({ error: `${err.message}` });
   }
 };
 
@@ -47,7 +47,7 @@ const findAllUserController = async (req, res) => {
     }
     res.status(200).send(users);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send({ error: `${err.message}` });
   }
 };
 
@@ -55,7 +55,7 @@ const findBydIdUserController = async (req, res) => {
   try {
     res.status(200).send(await findByIdUserService(req.params.id));
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send({ error: `${err.message}` });
   }
 };
 

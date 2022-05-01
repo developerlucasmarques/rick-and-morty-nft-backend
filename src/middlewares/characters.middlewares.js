@@ -22,7 +22,7 @@ const findAllCharactersApi = async () => {
       }
     }
   } catch (err) {
-    console.log(err.message);
+    res.status(500).send({ error: `${err.message}` });
   }
 };
 findAllCharactersApi();
@@ -58,6 +58,13 @@ const verifyCharacterExistInMongo = async (req, res, next) => {
         .send({ message: "Esse personagem já foi criado." });
     }
     next();
+  } catch (err) {
+    res.status(500).send({ error: `${err.message}` });
+  }
+};
+
+const verifyIdExistInMongo = async (req, res, next) => {
+  try {
   } catch (err) {
     res.status(500).send({ error: `${err.message}` });
   }
