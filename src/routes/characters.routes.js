@@ -1,12 +1,15 @@
 import express from "express";
 import {
   createCharacterController,
+  deleteByIdCharacterController,
   findAllCharactersController,
   findByIdCharacterController,
+  updateByIdCharacterController,
 } from "../controller/characters.controller.js";
 import {
-  verifyCharacterExistInMongo,
+  verifyCharacterExistInDb,
   verifyCharacterTrue,
+  verifyIdExistInDb,
   verifyObjectBody,
 } from "../middlewares/characters.middlewares.js";
 
@@ -16,8 +19,10 @@ router.post(
   "/create",
   verifyObjectBody,
   verifyCharacterTrue,
-  verifyCharacterExistInMongo,
+  verifyCharacterExistInDb,
   createCharacterController
 );
 router.get("/", findAllCharactersController);
-router.get("/find/:id", findByIdCharacterController);
+router.get("/find/:id", verifyIdExistInDb, findByIdCharacterController);
+router.put("/update/:id", verifyIdExistInDb, updateByIdCharacterController) 
+router.delete("/delete/:id", verifyIdExistInDb, deleteByIdCharacterController)
