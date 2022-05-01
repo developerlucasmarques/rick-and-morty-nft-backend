@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import fetch from "node-fetch";
 import { findByNameCharacterService } from "../services/characters.service.js";
 
@@ -49,7 +50,7 @@ const verifyCharacterTrue = (req, res, next) => {
   next();
 };
 
-const verifyCharacterExistInMongo = async (req, res, next) => {
+const verifyCharacterExistInDb = async (req, res, next) => {
   try {
     const character = await findByNameCharacterService(req.body.name);
     if (character) {
@@ -63,11 +64,21 @@ const verifyCharacterExistInMongo = async (req, res, next) => {
   }
 };
 
-const verifyIdExistInMongo = async (req, res, next) => {
+const verifyIdExistInDb = async (req, res, next) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).send({ message: "Id inválido." });
+    }
+    next();
   } catch (err) {
     res.status(500).send({ error: `${err.message}` });
   }
 };
 
-export { verifyObjectBody, verifyCharacterTrue, verifyCharacterExistInMongo };
+
+export {
+  verifyObjectBody,
+  verifyCharacterTrue,
+  verifyCharacterExistInDb,
+  verifyIdExistInDb,
+};
