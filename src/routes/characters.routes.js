@@ -12,6 +12,7 @@ import {
   verifyCommissionAmount,
   verifyIdExistInDb,
   verifyObjectBody,
+  verifyCharacterUpdateName
 } from "../middlewares/characters.middlewares.js";
 
 export const router = express.Router();
@@ -31,6 +32,7 @@ router.put(
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterTrue,
+  verifyCharacterUpdateName,
   verifyCommissionAmount,
   updateByIdCharacterController
 );

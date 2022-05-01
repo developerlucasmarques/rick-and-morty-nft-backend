@@ -65,6 +65,25 @@ const verifyCharacterExistInDb = async (req, res, next) => {
     res.status(500).send({ error: `${err.message}` });
   }
 };
+const verifyCharacterUpdateName = async (req, res, next) => {
+  try {
+    const character = await findByIdCharacterService(req.params.id)
+    const newCharacter = await findByNameCharacterService(req.body.name);
+    
+    var check = false
+    if( character.name == newCharacter.name){
+      check = true
+    }
+    if (newCharacter && !check) {
+      return res
+        .status(400)
+        .send({ message: "Esse personagem já foi criado." });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({ error: `${err.message}` });
+  }
+};
 
 const verifyIdExistInDb = async (req, res, next) => {
   try {
@@ -96,4 +115,5 @@ export {
   verifyCharacterExistInDb,
   verifyIdExistInDb,
   verifyCommissionAmount,
+  verifyCharacterUpdateName,
 };
