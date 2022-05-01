@@ -1,10 +1,7 @@
 import fetch from "node-fetch";
-import {
-  findByNameCharacterService,
-} from "../services/characters.service.js";
+import { findByNameCharacterService } from "../services/characters.service.js";
 
-const allCharacters = [];
-const allCharactersName = [];
+export const allCharacters = [];
 
 const findAllCharactersApi = async () => {
   try {
@@ -22,7 +19,6 @@ const findAllCharactersApi = async () => {
       for (let i of charactersPage.results) {
         const objectCharacter = { name: `${i.name}`, image: `${i.image}` };
         allCharacters.push(objectCharacter);
-        allCharactersName.push(i.name);
       }
     }
   } catch (err) {
@@ -32,24 +28,23 @@ const findAllCharactersApi = async () => {
 findAllCharactersApi();
 
 const verifyObjectBody = (req, res, next) => {
-  if (!req.body.name || !req.body.image) {
-    return res
-      .status(404)
-      .send({ message: "Envie todos os campos preenchidos!" });
+  if (!req.body.name) {
+    return res.status(404).send({ message: "Envie o nome do personagem!" });
   }
   next();
 };
 
 const verifyCharacterTrue = (req, res, next) => {
   let boolean = false;
-  for (let i of allCharactersName) {
-    if (req.body.name == i) {
+  for (let i of allCharacters) {
+    if (req.body.name == i.name) {
+      req.body.image = i.image;
       boolean = true;
       break;
     }
   }
   if (!boolean) {
-    return res.status(400).send({ message: "Insira um personagem verdadeiro" });
+    return res.status(400).send({ message: "Insira um personagem real." });
   }
   next();
 };
@@ -57,7 +52,7 @@ const verifyCharacterTrue = (req, res, next) => {
 const verifyCharacterExistInMongo = async (req, res, next) => {
   try {
     const character = await findByNameCharacterService(req.body.name);
-    if (character.name == req.body.name) {
+    if (character) {
       return res
         .status(400)
         .send({ message: "Esse personagem já foi criado." });
