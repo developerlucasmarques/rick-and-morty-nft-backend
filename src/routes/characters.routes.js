@@ -24,5 +24,11 @@ router.post(
 );
 router.get("/", findAllCharactersController);
 router.get("/find/:id", verifyIdExistInDb, findByIdCharacterController);
-router.put("/update/:id", verifyIdExistInDb, updateByIdCharacterController) 
-router.delete("/delete/:id", verifyIdExistInDb, deleteByIdCharacterController)
+router.put(
+  "/update/:id",
+  verifyIdExistInDb,
+  verifyObjectBody,
+  verifyCharacterTrue,
+  updateByIdCharacterController
+);
+router.delete("/delete/:id", verifyIdExistInDb, deleteByIdCharacterController);
