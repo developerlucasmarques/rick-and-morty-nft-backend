@@ -33,10 +33,10 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	coins: {
-		type: Number,
-		required: true,
-	},
+	// coins: {
+	// 	type: Number,
+	// 	required: true,
+	// },
 });
 
 UserSchema.pre('save', async function (next) {
