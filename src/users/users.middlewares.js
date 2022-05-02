@@ -37,9 +37,6 @@ const verifyExistingUserById = async (req, res, next) => {
 			return res.status(400).send({ message: 'Id inválido!' });
 		}
 		const findId = findByIdUserService(req.params.id);
-		if (!findId) {
-			return res.status(404).send({ message: 'Id não encontrado.' });
-		}
 		next();
 	} catch (err) {
 		return res.status(500).send(err.message);

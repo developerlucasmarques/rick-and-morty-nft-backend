@@ -238,6 +238,9 @@
 					"400": {
 						"description": "Bad Request"
 					},
+					"404": {
+						"description": "Not Found"
+					},
 					"200": {
 						"description": "OK",
 						"content": {

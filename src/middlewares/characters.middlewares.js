@@ -33,8 +33,8 @@ findAllCharactersApi();
 
 const verifyObjectBody = (req, res, next) => {
 	if (!req.body.name || !req.body.price || !req.body.commission) {
-		return res.status(404).send({
-			message: 'Envie o nome, o valor e uma taxa de comissão para a NFT!',
+		return res.status(400).send({
+			message: 'Existem campos vazios.',
 		});
 	}
 	next();

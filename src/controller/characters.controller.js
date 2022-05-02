@@ -16,7 +16,14 @@ const createCharacterController = async (req, res) => {
 
 const findAllCharactersController = async (req, res) => {
 	try {
-		res.status(200).send(await findAllCharactersService());
+		const char = await findAllCharactersService()
+
+		if(char.length == 0 ){
+			return res
+				.status(404)
+				.send({ message: 'Não existem personagens cadastrados.' });
+		}
+		res.status(200).send(char);
 	} catch (err) {
 		res.status(500).send({ error: `${err.message}` });
 	}
