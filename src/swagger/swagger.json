@@ -37,7 +37,7 @@
 										"username": "neymar",
 										"email": "neymar@gmail.com",
 										"password": "123456",
-										"avatar": "https://i.imgur.com/Ry1cb5M.png"
+										"photo": "https://i.imgur.com/Ry1cb5M.png"
 									}
 								}
 							}
@@ -354,7 +354,7 @@
 					"password": {
 						"type": "string"
 					},
-					"avatar": {
+					"photo": {
 						"type": "string"
 					}
 				}
