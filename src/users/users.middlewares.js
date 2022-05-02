@@ -6,11 +6,11 @@ import {
 } from './users.service.js';
 
 const checkAllFields = (req, res, next) => {
-	const { name, username, email, password, avatar } = req.body;
-	if (!name || !username || !email || !password || !avatar) {
+	const { name, username, email, password, photo } = req.body;
+	if (!name || !username || !email || !password || !photo) {
 		return res.status(400).send({
 			message:
-				"Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'avatar'.",
+				"Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'photo'.",
 		});
 	}
 	next();

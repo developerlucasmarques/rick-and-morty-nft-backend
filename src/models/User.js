@@ -29,14 +29,14 @@ const UserSchema = new mongoose.Schema({
 		minlength: 6,
 		maxlength: 100,
 	},
-	avatar: {
+	photo: {
 		type: String,
 		required: true,
 	},
-	// coins: {
-	// 	type: Number,
-	// 	required: true,
-	// },
+	coins: {
+		type: Number,
+		required: true,
+	},
 });
 
 UserSchema.pre('save', async function (next) {
