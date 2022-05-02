@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import fetch from "node-fetch";
-import { findByNameCharacterService, findByIdCharacterService } from "../services/characters.service.js";
+import {
+  findByNameCharacterService,
+  findByIdCharacterService,
+} from "../services/characters.service.js";
 
 export const allCharacters = [];
 
@@ -67,12 +70,14 @@ const verifyCharacterExistInDb = async (req, res, next) => {
 };
 const verifyCharacterUpdateName = async (req, res, next) => {
   try {
-    const character = await findByIdCharacterService(req.params.id)
+    const character = await findByIdCharacterService(req.params.id);
     const newCharacter = await findByNameCharacterService(req.body.name);
-    
-    var check = false
-    if( character.name == newCharacter.name){
-      check = true
+  
+    console.log(character);
+    console.log(newCharacter);
+    let check = false;
+    if (character.name == newCharacter.name) {
+      check = true;
     }
     if (newCharacter && !check) {
       return res
@@ -90,9 +95,9 @@ const verifyIdExistInDb = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).send({ message: "Id inválido." });
     }
-    const findId = await findByIdCharacterService(req.params.id)
-    if(!findId){
-      return res.status(404).send({ message: "Id não encontrado." })
+    const findId = await findByIdCharacterService(req.params.id);
+    if (!findId) {
+      return res.status(404).send({ message: "Id não encontrado." });
     }
     next();
   } catch (err) {
