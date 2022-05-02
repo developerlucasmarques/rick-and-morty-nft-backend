@@ -12,7 +12,7 @@ Para mais detalhes, acesse nossa documentação no [Swagger](https://api-rickyan
 
 Esse projeto foi desenvolvido por:
 
-* **Lucas Santos** - [LinkedIn](https://www.linkedin.com/in/daniel-vinhas-84343390/)
+* **Lucas Marques** - [LinkedIn](https://www.linkedin.com/in/mlucasdev/)
 * **Daniel Vinhas** - [LinkedIn](https://www.linkedin.com/in/daniel-vinhas-84343390/)
 
 ## 🛠️ CONSTRUÍDO COM:
