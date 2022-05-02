@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API Twitter Clone",
-    "description": "API do clone do Twitter",
+    "title": "API Ricky and Morty Nfts",
+    "description": "API das Nfts do Ricky and Morty - Fins didáticos. Autores: Lucas Santos (https://www.linkedin.com/in/mlucasdev) e Daniel Vinhas (https://www.linkedin.com/in/vinhasdaniel)",
     "contact": {
-      "email": "seu@email.com.br"
+      "email": "lucasmsantos819@gmail.com, vinhas.daniel@gmail.com"
     },
     "version": "1.0.0"
   },
@@ -22,7 +22,7 @@
     "/users/create": {
       "post": {
         "summary": "Criar um novo usuário",
-        "description": "Rota responsável por criar um novo usuário",
+        "description": "Rota responsável por criar um novo usuário. São necessários um minimo de 3 characteres para os campos: name e username, e 6 para o password.",
         "tags": ["Users"],
         "requestBody": {
           "content": {
@@ -46,7 +46,7 @@
         },
         "responses": {
           "400": {
-            "description": "Not Found"
+            "description": "Bad request"
           },
           "201": {
             "description": "Created",
@@ -68,7 +68,7 @@
         "description": "Rota responsável por buscar todos os usuários",
         "tags": ["Users"],
         "responses": {
-          "400": {
+          "404": {
             "description": "Not Found"
           },
           "200": {
@@ -102,8 +102,11 @@
           }
         ],
         "responses": {
-          "400": {
+          "404": {
             "description": "Not Found"
+          },
+          "400": {
+            "description" : "Bad Request"
           },
           "200": {
             "description": "OK",
@@ -142,7 +145,7 @@
           }
         },
         "responses": {
-          "400": {
+          "404": {
             "description": "Not Found"
           },
           "200": {
