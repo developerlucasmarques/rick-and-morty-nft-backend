@@ -10,8 +10,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3001",
-      "description": "API local"
+      "url": "https://api-rickyandmorty-nfts.onrender.com",
+      "description": "API produção - Render"
     },
     {
       "url": "http://localhost:3001",
