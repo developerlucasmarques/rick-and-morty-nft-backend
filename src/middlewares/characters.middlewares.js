@@ -68,13 +68,15 @@ const verifyCharacterExistInDb = async (req, res, next) => {
     res.status(500).send({ error: `${err.message}` });
   }
 };
+
 const verifyCharacterUpdateName = async (req, res, next) => {
   try {
     const character = await findByIdCharacterService(req.params.id);
     const newCharacter = await findByNameCharacterService(req.body.name);
-  
-    console.log(character);
-    console.log(newCharacter);
+
+    if (!newCharacter) {
+      return next();
+    }
     let check = false;
     if (character.name == newCharacter.name) {
       check = true;
