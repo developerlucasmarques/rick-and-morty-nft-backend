@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { findByEmailUserService } from "./users.service.js";
+import { findByEmailUserService, findByUsernameUserService } from "./users.service.js";
 
 const checkAllFields = (req, res, next) => {
   const { name, username, email, password, avatar } = req.body;
@@ -14,8 +14,9 @@ const checkAllFields = (req, res, next) => {
 
 const verifyExistingUserByEmail = async (req, res, next) => {
   try {
-    const foundUser = await findByEmailUserService(req.body.email);
-    if (foundUser) {
+    const foundUserEmail = await findByEmailUserService(req.body.email);
+    const foundUsername = await findByUsernameUserService(req.body.username)
+    if (foundUserEmail || foundUsername) {
       return res.status(400).send({
         message: "Esse usuário já existe!",
       });
