@@ -19,23 +19,23 @@ const createUserController = async (req, res) => {
       });
     }
 
-    const token = await authGenerateTokenService(user.id);
+				const token = await authGenerateTokenService(user.id);
 
-    res.status(201).send({
-      user: {
-        id: user.id,
-        name,
-        username,
-        email,
-        photo,
-        coins,
-      },
-      token,
-    });
-  } catch (err) {
-    res.status(500).send({ error: `${err.message}` });
-  }
-};
+				res.status(201).send({
+				user: {
+					id: user.id,
+					name,
+					username,
+					email,
+					photo,
+					coins,
+				},
+				token,
+				});
+			} catch (err) {
+				res.status(500).send({ error: `${err.message}` });
+			}
+			};
 
 const findAllUserController = async (req, res) => {
   try {
