@@ -13,8 +13,7 @@ const createUserController = async (req, res) => {
     req.body.coins = 1000;
     const { name, username, email, photo, coins } = req.body;
     const user = await createUserService(req.body);
-	console.log(user)
-    if (!user) {
+	if (!user) {
       return res.status(400).send({
         message: 'Erro ao criar usuário!',
       });
