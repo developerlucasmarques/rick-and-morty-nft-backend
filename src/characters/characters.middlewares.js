@@ -26,7 +26,7 @@ const findAllCharactersApi = async () => {
       }
     }
   } catch (err) {
-    res.status(500).send({ error: `${err.message}` });
+    console.log({ error: `${err.message}` })
   }
 };
 findAllCharactersApi();
