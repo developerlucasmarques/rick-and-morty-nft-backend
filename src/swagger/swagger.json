@@ -1,381 +1,381 @@
 {
-	"openapi": "3.0.0",
-	"info": {
-		"title": "API Ricky and Morty Nfts",
-		"description": "API das Nfts do Ricky and Morty - Fins didáticos. Autores: Lucas Santos (https://www.linkedin.com/in/mlucasdev) e Daniel Vinhas (https://www.linkedin.com/in/vinhasdaniel)",
-		"contact": {
-			"email": "lucasmsantos819@gmail.com, vinhas.daniel@gmail.com"
-		},
-		"version": "1.0.0"
-	},
-	"servers": [
-		{
-			"url": "https://api-rickyandmorty-nfts.onrender.com",
-			"description": "API produção - Render"
-		},
-		{
-			"url": "http://localhost:3001",
-			"description": "API local"
-		}
-	],
-	"paths": {
-		"/users/create": {
-			"post": {
-				"summary": "Criar um novo usuário",
-				"description": "Rota responsável por criar um novo usuário. São necessários um minimo de 3 characteres para os campos: name e username, e 6 para o password.",
-				"tags": ["Users"],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							},
-							"examples": {
-								"Users": {
-									"value": {
-										"name": "Neymar Jr",
-										"username": "neymar",
-										"email": "neymar@gmail.com",
-										"password": "123456",
-										"photo": "https://i.imgur.com/Ry1cb5M.png"
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"400": {
-						"description": "Bad request"
-					},
-					"201": {
-						"description": "Created",
-						"content": {
-							"application/json": {
-								"schemma": {
-									"type": "object",
-									"$ref": "#/components/schemas/User"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/users": {
-			"get": {
-				"summary": "Buscar todos os usuários",
-				"description": "Rota responsável por buscar todos os usuários",
-				"tags": ["Users"],
-				"responses": {
-					"404": {
-						"description": "Not Found"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"items": {
-										"$ref": "#/components/schemas/User"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/users/{id}": {
-			"get": {
-				"summary": "Buscar um usuário por ID",
-				"description": "Rota responsável por buscar um único usuário por ID",
-				"tags": ["Users"],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"type": "string",
-						"description": "Id do usuário para a busca",
-						"required": true
-					}
-				],
-				"responses": {
-					"404": {
-						"description": "Not Found"
-					},
-					"400": {
-						"description": "Bad Request"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/User"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/login": {
-			"post": {
-				"summary": "Entrar em Rick and Morty NFTs",
-				"description": "Rota responsável fazer o login de um usuário cadastrado",
-				"tags": ["Auth"],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							},
-							"examples": {
-								"User": {
-									"value": {
-										"email": "neymar@gmail.com",
-										"password": "123456"
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"404": {
-						"description": "Not Found"
-					},
-					"200": {
-						"description": "OK"
-					}
-				}
-			}
-		},
-		"/characters/create": {
-			"post": {
-				"summary": "Cadastrar um personagem",
-				"description": "Rota responsável por cadastrar um novo personagem",
-				"tags": ["Characters"],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Characters"
-							},
-							"examples": {
-								"Characters": {
-									"value": {
-										"name": "Albert Einstein",
-										"price": 300,
-										"commission": 10
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"400": {
-						"description": "Bad Request"
-					},
-					"201": {
-						"description": "Created",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/Characters"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/characters/": {
-			"get": {
-				"summary": "Lista de todas os personagens",
-				"description": "Rota responsável por listar todos os personagens",
-				"tags": ["Characters"],
-				"responses": {
-					"404": {
-						"description": "Not Found"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Characters"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/characters/find/{id}": {
-			"get": {
-				"summary": "Busca um personagem pelo ID",
-				"description": "Rota responsável por buscar um personagem pelo ID",
-				"tags": ["Characters"],
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"type": "string",
-						"description": "ID do personagem para buscar",
-						"required": true
-					}
-				],
-				"responses": {
-					"400": {
-						"description": "Bad Request"
-					},
-					"404": {
-						"description": "Not Found"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/Characters"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/characters/update/{id}": {
-			"put": {
-				"summary": "Editar um personagem pelo ID",
-				"description": "Rota responsável por editar un personagem pelo ID",
-				"tags": ["Characters"],
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"type": "string",
-						"description": "ID do personagem para buscar",
-						"required": true
-					}
-				],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Characters"
-							},
-							"examples": {
-								"Paletas": {
-									"value": {
-										"name": "Albert Einstein",
-										"price": 500,
-										"commission": 5
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"400": {
-						"description": "Bad Request"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/Characters"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/characters/delete/{id}": {
-			"delete": {
-				"summary": "Apagar um personagem pelo ID",
-				"description": "Rota responsável por apagar um personagem pelo ID",
-				"tags": ["Characters"],
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"type": "string",
-						"description": "Id do personagem para deleção",
-						"required": true
-					}
-				],
-				"responses": {
-					"400": {
-						"description": "Bad Request"
-					},
-					"200": {
-						"description": "OK"
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"securitySchemes": {
-			"bearerAuth": {
-				"type": "http",
-				"scheme": "bearer",
-				"bearerFormat": "JWT"
-			}
-		},
-		"schemas": {
-			"User": {
-				"type": "object",
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"photo": {
-						"type": "string"
-					}
-				}
-			},
-			"Characters": {
-				"type": "object",
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"image": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number"
-					},
-					"commission": {
-						"type": "number"
-					}
-				}
-			}
-		}
-	}
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Ricky and Morty Nfts",
+    "description": "API das Nfts do Ricky and Morty - Fins didáticos. Autores: Lucas Santos (https://www.linkedin.com/in/mlucasdev) e Daniel Vinhas (https://www.linkedin.com/in/vinhasdaniel)",
+    "contact": {
+      "email": "lucasmsantos819@gmail.com, vinhas.daniel@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api-rickyandmorty-nfts.onrender.com",
+      "description": "API produção - Render"
+    },
+    {
+      "url": "http://localhost:3001",
+      "description": "API local"
+    }
+  ],
+  "paths": {
+    "/users/create": {
+      "post": {
+        "summary": "Criar um novo usuário",
+        "description": "Rota responsável por criar um novo usuário. São necessários um minimo de 3 characteres para os campos: name e username, e 6 para o password.",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "name": "Neymar Jr",
+                    "username": "neymar",
+                    "email": "neymar@gmail.com",
+                    "password": "123456",
+                    "photo": "https://i.imgur.com/Ry1cb5M.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Buscar todos os usuários",
+        "description": "Rota responsável por buscar todos os usuários",
+        "tags": ["Users"],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Buscar um usuário por ID",
+        "description": "Rota responsável por buscar um único usuário por ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Id do usuário para a busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Entrar em Rick and Morty NFTs",
+        "description": "Rota responsável fazer o login de um usuário cadastrado",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "neymar@gmail.com",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/characters/create": {
+      "post": {
+        "summary": "Cadastrar um personagem",
+        "description": "Rota responsável por cadastrar um novo personagem",
+        "tags": ["Characters"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Characters"
+              },
+              "examples": {
+                "Characters": {
+                  "value": {
+                    "name": "Albert Einstein",
+                    "price": 300,
+                    "commission": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Characters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/": {
+      "get": {
+        "summary": "Lista de todas os personagens",
+        "description": "Rota responsável por listar todos os personagens",
+        "tags": ["Characters"],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Characters"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/find/{id}": {
+      "get": {
+        "summary": "Busca um personagem pelo ID",
+        "description": "Rota responsável por buscar um personagem pelo ID",
+        "tags": ["Characters"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "description": "ID do personagem para buscar",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Characters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/update/{id}": {
+      "put": {
+        "summary": "Editar um personagem pelo ID",
+        "description": "Rota responsável por editar un personagem pelo ID",
+        "tags": ["Characters"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "description": "ID do personagem para buscar",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Characters"
+              },
+              "examples": {
+                "Paletas": {
+                  "value": {
+                    "name": "Albert Einstein",
+                    "price": 500,
+                    "commission": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Characters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/delete/{id}": {
+      "delete": {
+        "summary": "Apagar um personagem pelo ID",
+        "description": "Rota responsável por apagar um personagem pelo ID",
+        "tags": ["Characters"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "description": "Id do personagem para deleção",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          }
+        }
+      },
+      "Characters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "commission": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
 }

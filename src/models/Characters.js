@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const CharactersSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -7,4 +7,4 @@ const CharactersSchema = new mongoose.Schema({
   commission: { type: Number, required: true },
 });
 
-export const Characters = mongoose.model('characters', CharactersSchema);
+export const Characters = mongoose.model("characters", CharactersSchema);

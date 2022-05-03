@@ -4,7 +4,7 @@ import {
   findAllCharactersService,
   findByIdCharacterService,
   updateByIdCharacterService,
-} from './characters.service.js';
+} from "./characters.service.js";
 
 const createCharacterController = async (req, res) => {
   try {
@@ -21,7 +21,7 @@ const findAllCharactersController = async (req, res) => {
     if (char.length == 0) {
       return res
         .status(404)
-        .send({ message: 'Não existem personagens cadastrados.' });
+        .send({ message: "Não existem personagens cadastrados." });
     }
     res.status(200).send(char);
   } catch (err) {
