@@ -8,35 +8,34 @@ import {
 
 dotenv.config();
 
-const createUserController = async (req, res) => {
-  try {
-    req.body.coins = 1000;
-    const { name, username, email, photo, coins } = req.body;
-    const user = await createUserService(req.body);
-	console.log(user)
-    if (!user) {
-      return res.status(400).send({
-        message: 'Erro ao criar usuário!',
-      });
-    }
+// const createUserController = async (req, res) => {
+//   try {
+//     req.body.coins = 1000;
+//     const { name, username, email, photo, coins } = req.body;
+//     const user = await createUserService(req.body);
+// 	if (!user) {
+//       return res.status(400).send({
+//         message: 'Erro ao criar usuário!',
+//       });
+//     }
 
-    const token = await authGenerateTokenService(user.id);
+//     const token = await authGenerateTokenService(user.id);
 
-    res.status(201).send({
-      user: {
-        id: user.id,
-        name,
-        username,
-        email,
-        photo,
-        coins,
-      },
-      token,
-    });
-  } catch (err) {
-    res.status(500).send({ error: `${err.message}` });
-  }
-};
+//     res.status(201).send({
+//       user: {
+//         id: user.id,
+//         name,
+//         username,
+//         email,
+//         photo,
+//         coins,
+//       },
+//       token,
+//     });
+//   } catch (err) {
+//     res.status(500).send({ error: `${err.message}` });
+//   }
+// };
 
 const findAllUserController = async (req, res) => {
   try {
