@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import { connectDatabase } from './database/database.js';
-import { router } from './routes/characters.routes.js';
+import { router } from './characters/characters.routes.js';
 import { userRouter } from './users/users.routes.js';
 import { authRouter } from './auth/auth.routes.js';
 import { swaggerRouter } from './swagger/swagger.routes.js';
@@ -21,5 +21,5 @@ app.use('/characters', router);
 app.use('/api-docs', swaggerRouter);
 
 app.listen(port, () => {
-	console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
