@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Rick Sanchez",
+    "price": 2000,
+    "commission": 10
+  },
+  {
+    "name": "Morty Smith",
+    "price": 2000,
+    "commission": 10
+  },
+  {
+    "name": "Summer Smith",
+    "price": 500,
+    "commission": 8
+  },
+  {
+    "name": "Beth Smith",
+    "price": 500,
+    "commission": 7
+  }
+]
