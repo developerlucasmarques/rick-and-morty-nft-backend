@@ -5,7 +5,9 @@
 
 O objetivo desse projeto foi criar uma API restfull com validação de Login usando JWT e CRUD completo dos personagens da série.<br><br>
 
-Para mais detalhes, acesse nossa documentação no [Swagger](https://api-rickyandmorty-nfts.onrender.com/api-docs).
+Para criar um novo personagem, use o nome de algum personagem real da série, como um dos exemplos no arquivo: <b>list-of-characters-examples.json</b>
+
+Para mais detalhes, acesse nossa documentação no [Swagger](https://api-rickyandmorty-nfts.onrender.com/api-docs).<br>
 
 
 ## ✒️ Autores
@@ -17,7 +19,7 @@ Esse projeto foi desenvolvido por:
 
 ## 🛠️ CONSTRUÍDO COM:
 
-NodeJs | Mongo Atlas | express | Mongoose | JWT | bcrypt
+NodeJs | JavaScript | Mongo Atlas | Express | Mongoose | JWT | bcrypt | Node Fecth
 
 ## 📄 LICENÇA
 
