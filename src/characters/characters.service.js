@@ -15,7 +15,7 @@ const updateByIdCharacterService = async (idParams, body) => {
     return [character, newCharacter];
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -34,5 +34,5 @@ export {
   findByIdCharacterService,
   updateByIdCharacterService,
   deleteByIdCharacterService,
-  filterByNameCharacterService
+  filterByNameCharacterService,
 };

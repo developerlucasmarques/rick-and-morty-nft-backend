@@ -11,7 +11,7 @@ const createCharacterController = async (req, res) => {
     res.status(201).send(await createCharacterService(req.body));
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -29,7 +29,7 @@ const findAllCharactersController = async (req, res) => {
     res.status(200).send(char);
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -40,7 +40,7 @@ const findByIdCharacterController = async (req, res) => {
     res.status(200).send(await findByIdCharacterService(req.params.id));
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -53,7 +53,7 @@ const updateByIdCharacterController = async (req, res) => {
       .send(await updateByIdCharacterService(req.params.id, req.body));
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -70,7 +70,7 @@ const deleteByIdCharacterController = async (req, res) => {
     res.status(200).send({ message: `${deleted.name} deletado com sucesso!` });
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -78,14 +78,17 @@ const deleteByIdCharacterController = async (req, res) => {
 
 const filterByNameCharacterController = async (req, res) => {
   try {
-    const filterByName = await filterByNameCharacterService(req.query)
-    
-    if (filterByName){
+    const filterByName = await filterByNameCharacterService(req.query);
 
+    if (filterByName.length === 0) {
+      return res
+        .status(404)
+        .send({ message: 'Desconhecemos esse personagem.' });
     }
+    res.status.send(filterByName);
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }

@@ -5,6 +5,7 @@ import {
   findAllCharactersController,
   findByIdCharacterController,
   updateByIdCharacterController,
+  filterByNameCharacterController
 } from './characters.controller.js';
 import {
   verifyCharacterExistInDb,
@@ -36,5 +37,5 @@ router.put(
   verifyCommissionAmount,
   updateByIdCharacterController
 );
-router.get('/search/:name', filterByNameCharacterController);
+router.get('/search', filterByNameCharacterController);
 router.delete('/delete/:id', verifyIdExistInDb, deleteByIdCharacterController);
