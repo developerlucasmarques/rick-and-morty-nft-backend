@@ -3,6 +3,7 @@ import { authGenerateTokenService } from "../auth/auth.service.js";
 import {
   createUserService,
   findAllUserService,
+  findByAdminUserService,
   findByIdUserService,
 } from "./users.service.js";
 
@@ -44,6 +45,10 @@ const createUserController = async (req, res) => {
 
 const createUserAdminController = async (req, res) => {
   try {
+    const adm = await findByAdminUserService(true);
+    if (adm) {
+      return res.status(400).send({message: "Já existe um admin criado."});
+    }
     req.body.coins = 0;
     req.body.admin = true;
     const { name, username, email, photo, coins, admin } = req.body;
@@ -69,7 +74,7 @@ const createUserAdminController = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
     });
     console.log(err.message);
@@ -86,7 +91,7 @@ const findAllUserController = async (req, res) => {
     }
     res.status(200).send(users);
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
     });
     console.log(err.message);
@@ -97,7 +102,7 @@ const findBydIdUserController = async (req, res) => {
   try {
     res.status(200).send(await findByIdUserService(req.params.id));
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
     });
     console.log(err.message);
