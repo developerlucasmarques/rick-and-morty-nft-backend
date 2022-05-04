@@ -22,6 +22,8 @@ userRouter.post(
 
 userRouter.post(
   '/create-admin',
+  checkAllFields,
+  verifyExistingUserByEmail,
   createUserAdminController
 )
 
