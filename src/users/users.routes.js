@@ -18,5 +18,6 @@ userRouter.post(
   verifyExistingUserByEmail,
   createUserController
 );
+
 userRouter.get("/", findAllUserController);
 userRouter.get("/:id", verifyExistingUserById, findBydIdUserController);

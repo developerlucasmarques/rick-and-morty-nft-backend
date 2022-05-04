@@ -27,7 +27,10 @@ const verifyExistingUserByEmail = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    return res.status(500).send(err.message);
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+    });
+    console.log(err);
   }
 };
 
@@ -45,7 +48,10 @@ const verifyExistingUserById = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    return res.status(500).send(err.message);
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+    });
+    console.log(err);
   }
 };
 

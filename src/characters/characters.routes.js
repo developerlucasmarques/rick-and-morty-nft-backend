@@ -36,4 +36,5 @@ router.put(
   verifyCommissionAmount,
   updateByIdCharacterController
 );
+router.get('/search/:name', filterByNameCharacterController);
 router.delete('/delete/:id', verifyIdExistInDb, deleteByIdCharacterController);

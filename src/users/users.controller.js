@@ -33,7 +33,10 @@ const createUserController = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).send({ error: `${err.message}` });
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+    });
+    console.log(err);
   }
 };
 
@@ -47,7 +50,10 @@ const findAllUserController = async (req, res) => {
     }
     res.status(200).send(users);
   } catch (err) {
-    res.status(500).send({ error: `${err.message}` });
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+    });
+    console.log(err);
   }
 };
 
@@ -55,7 +61,10 @@ const findBydIdUserController = async (req, res) => {
   try {
     res.status(200).send(await findByIdUserService(req.params.id));
   } catch (err) {
-    res.status(500).send({ error: `${err.message}` });
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+    });
+    console.log(err);
   }
 };
 
