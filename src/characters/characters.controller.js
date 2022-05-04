@@ -4,7 +4,9 @@ import {
   findAllCharactersService,
   findByIdCharacterService,
   updateByIdCharacterService,
+  filterByNameCharacterService
 } from './characters.service.js';
+
 
 const createCharacterController = async (req, res) => {
   try {
@@ -85,9 +87,18 @@ const filterByNameCharacterController = async (req, res) => {
         .status(404)
         .send({ message: 'Desconhecemos esse personagem.' });
     }
-    res.status.send(filterByName);
+    // res.send(filterByName)
+    res.send({
+      Characters: filterByName.map((map) => ({
+        id: map._id,
+        name: map.name,
+        price: map.price,
+        comission: map.comission,
+        image: map.image
+      }))
+    });
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
