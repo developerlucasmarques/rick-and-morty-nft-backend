@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import {
   findByEmailUserService,
   findByUsernameUserService,
   findByIdUserService,
-} from "./users.service.js";
+} from './users.service.js';
 
 const checkAllFields = (req, res, next) => {
   const { name, username, email, password, photo } = req.body;
@@ -22,13 +22,13 @@ const verifyExistingUserByEmail = async (req, res, next) => {
     const foundUsername = await findByUsernameUserService(req.body.username);
     if (foundUserEmail || foundUsername) {
       return res.status(400).send({
-        message: "Esse usuário já existe!",
+        message: 'Esse usuário já existe!',
       });
     }
     next();
   } catch (err) {
     res.status(500).semd({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
@@ -37,13 +37,13 @@ const verifyExistingUserByEmail = async (req, res, next) => {
 const verifyExistingUserById = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).send({ message: "Id inválido!" });
+      return res.status(400).send({ message: 'Id inválido!' });
     }
     const findId = await findByIdUserService(req.params.id);
     // console.log(findId.username)
     if (!findId) {
       return res.status(404).send({
-        message: "Não encontramos esse Id!",
+        message: 'Não encontramos esse Id!',
       });
     }
     next();
