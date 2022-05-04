@@ -1,4 +1,5 @@
 import express from 'express';
+import { authMiddleware } from '../auth/auth.middleware.js';
 import {
   createCharacterController,
   deleteByIdCharacterController,
@@ -20,16 +21,18 @@ export const router = express.Router();
 
 router.post(
   '/create',
+  authMiddleware,
   verifyObjectBody,
   verifyCharacterTrue,
   verifyCharacterExistInDb,
   verifyCommissionAmount,
   createCharacterController
 );
-router.get('/', findAllCharactersController);
-router.get('/find/:id', verifyIdExistInDb, findByIdCharacterController);
+router.get('/', authMiddleware, findAllCharactersController);
+router.get('/find/:id', authMiddleware, verifyIdExistInDb, findByIdCharacterController);
 router.put(
   '/update/:id',
+  authMiddleware,
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterTrue,
@@ -37,5 +40,5 @@ router.put(
   verifyCommissionAmount,
   updateByIdCharacterController
 );
-router.get('/search', filterByNameCharacterController);
-router.delete('/delete/:id', verifyIdExistInDb, deleteByIdCharacterController);
+router.get('/search', authMiddleware, filterByNameCharacterController);
+router.delete('/delete/:id', authMiddleware, verifyIdExistInDb, deleteByIdCharacterController);
