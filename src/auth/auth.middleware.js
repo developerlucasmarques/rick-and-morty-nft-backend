@@ -37,20 +37,11 @@ const authLoginMiddleware = (req, res, next) => {
 
 const authVerifyUserAdminMiddleware = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
-    const parts = authHeader.split(" ");
-    const [scheme, token] = parts;
-
-    jwt.verify(token, process.env.SECRET, async (err, decoded) => {
-      if (!decoded) {
-        return res.status(400).send({ message: "Token inválido" });
-      }
-      const user = await findByIdUserService(decoded.id);
-      if (!user.admin) {
-        return res.status(401).send({ message: "Sem permissão!" });
-      }
-      return next();
-    });
+    const user = await findByIdUserService(req.userID);
+    if (!user.admin) {
+      return res.status(401).send({ message: "Sem permissão!" });
+    }
+    return next();
   } catch (err) {
     res.status(500).send({
       message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
