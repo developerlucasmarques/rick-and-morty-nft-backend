@@ -4,13 +4,15 @@ import {
   findAllCharactersService,
   findByIdCharacterService,
   updateByIdCharacterService,
+  filterByNameCharacterService
 } from './characters.service.js';
+
 
 const createCharacterController = async (req, res) => {
   try {
     res.status(201).send(await createCharacterService(req.body));
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
@@ -19,19 +21,19 @@ const createCharacterController = async (req, res) => {
 
 const findAllCharactersController = async (req, res) => {
   try {
-    const char = await findAllCharactersService();
+    const characters = await findAllCharactersService();
 
-    if (char.length == 0) {
+    if (characters.length == 0) {
       return res
         .status(404)
         .send({ message: 'Não existem personagens cadastrados.' });
     }
-    res.status(200).send(char);
+    res.status(200).send(characters);
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
@@ -39,7 +41,7 @@ const findByIdCharacterController = async (req, res) => {
   try {
     res.status(200).send(await findByIdCharacterService(req.params.id));
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
@@ -52,7 +54,7 @@ const updateByIdCharacterController = async (req, res) => {
       .status(200)
       .send(await updateByIdCharacterService(req.params.id, req.body));
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
@@ -69,7 +71,7 @@ const deleteByIdCharacterController = async (req, res) => {
     }
     res.status(200).send({ message: `${deleted.name} deletado com sucesso!` });
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
@@ -85,9 +87,18 @@ const filterByNameCharacterController = async (req, res) => {
         .status(404)
         .send({ message: 'Desconhecemos esse personagem.' });
     }
-    res.status.send(filterByName);
+    // res.send(filterByName)
+    res.send({
+      Characters: filterByName.map((map) => ({
+        id: map._id,
+        name: map.name,
+        price: map.price,
+        comission: map.comission,
+        image: map.image
+      }))
+    });
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);

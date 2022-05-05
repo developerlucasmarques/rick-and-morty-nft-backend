@@ -27,7 +27,7 @@ const verifyExistingUserByEmail = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
@@ -48,7 +48,7 @@ const verifyExistingUserById = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
     });
     console.log(err);

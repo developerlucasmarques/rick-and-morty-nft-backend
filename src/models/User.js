@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  admin: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 UserSchema.pre("save", async function (next) {

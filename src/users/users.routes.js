@@ -1,6 +1,7 @@
 import express from 'express';
 export const userRouter = express.Router();
 import {
+  createUserAdminController,
   createUserController,
   findAllUserController,
   findBydIdUserController,
@@ -18,6 +19,13 @@ userRouter.post(
   verifyExistingUserByEmail,
   createUserController
 );
+
+userRouter.post(
+  '/create-admin',
+  checkAllFields,
+  verifyExistingUserByEmail,
+  createUserAdminController
+)
 
 userRouter.get('/', findAllUserController);
 userRouter.get('/:id', verifyExistingUserById, findBydIdUserController);
