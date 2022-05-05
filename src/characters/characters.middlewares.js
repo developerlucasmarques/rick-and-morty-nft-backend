@@ -130,28 +130,6 @@ const verifyCommissionAmount = (req, res, next) => {
   next();
 };
 
-const verifyUserIsOneAdmin = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-    const parts = authHeader.split(" ");
-    const [scheme, token] = parts;
-
-    jwt.verify(token, process.env.SECRET, async (err, decoded) => {
-      const user = await findByIdUserService(decoded.id);
-      if (!user.admin) {
-        return res.status(400).send({ message: "Sem permissão!" });
-      }
-      return next();
-    });
-    
-  } catch (err) {
-    res.status(500).send({
-      message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
-    });
-    console.log(err.message);
-  }
-};
-
 export {
   verifyObjectBody,
   verifyCharacterTrue,
