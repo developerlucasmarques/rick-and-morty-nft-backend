@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 import fetch from "node-fetch";
-import jwt from "jsonwebtoken";
-import { findByIdUserService } from "../users/users.service.js";
 import {
   findByNameCharacterService,
   findByIdCharacterService,
