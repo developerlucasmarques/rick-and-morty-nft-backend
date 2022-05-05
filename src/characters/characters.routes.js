@@ -15,6 +15,7 @@ import {
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterUpdateName,
+  verifyUserIsOneAdmin,
 } from './characters.middlewares.js';
 
 export const router = express.Router();
@@ -28,7 +29,7 @@ router.post(
   verifyCommissionAmount,
   createCharacterController
 );
-router.get('/', authMiddleware, findAllCharactersController);
+router.get('/', authMiddleware, verifyUserIsOneAdmin, findAllCharactersController);
 router.get('/find/:id', authMiddleware, verifyIdExistInDb, findByIdCharacterController);
 router.put(
   '/update/:id',
