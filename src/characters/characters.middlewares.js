@@ -135,5 +135,4 @@ export {
   verifyIdExistInDb,
   verifyCommissionAmount,
   verifyCharacterUpdateName,
-  verifyUserIsOneAdmin,
 };
