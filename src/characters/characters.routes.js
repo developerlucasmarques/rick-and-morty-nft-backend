@@ -1,5 +1,5 @@
 import express from 'express';
-import { authMiddleware } from '../auth/auth.middleware.js';
+import { authLoginMiddleware, authVerifyUserAdminMiddleware } from '../auth/auth.middleware.js';
 import {
   createCharacterController,
   deleteByIdCharacterController,
@@ -15,25 +15,29 @@ import {
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterUpdateName,
-  verifyUserIsOneAdmin,
 } from './characters.middlewares.js';
 
 export const router = express.Router();
 
 router.post(
   '/create',
-  authMiddleware,
+  authLoginMiddleware,
+  authVerifyUserAdminMiddleware,
   verifyObjectBody,
   verifyCharacterTrue,
   verifyCharacterExistInDb,
   verifyCommissionAmount,
   createCharacterController
 );
-router.get('/', authMiddleware, verifyUserIsOneAdmin, findAllCharactersController);
-router.get('/find/:id', authMiddleware, verifyIdExistInDb, findByIdCharacterController);
+
+router.get('/', authLoginMiddleware, findAllCharactersController);
+router.get('/find/:id', authLoginMiddleware, verifyIdExistInDb, findByIdCharacterController);
+router.get('/search', filterByNameCharacterController);
+
 router.put(
   '/update/:id',
-  authMiddleware,
+  authLoginMiddleware,
+  authVerifyUserAdminMiddleware,
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterTrue,
@@ -41,5 +45,4 @@ router.put(
   verifyCommissionAmount,
   updateByIdCharacterController
 );
-router.get('/search', authMiddleware, filterByNameCharacterController);
-router.delete('/delete/:id', authMiddleware, verifyIdExistInDb, deleteByIdCharacterController);
+router.delete('/delete/:id', authLoginMiddleware, authVerifyUserAdminMiddleware, verifyIdExistInDb, deleteByIdCharacterController);
