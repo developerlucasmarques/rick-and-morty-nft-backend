@@ -14,15 +14,15 @@ const updateByIdCharacterService = async (idParams, body) => {
     const newCharacter = body;
     return [character, newCharacter];
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err);
   }
 };
 
-const filterByNameCharacterService = (name) =>
-  Characters.find({ $regex: `${name || ''}`, $options: 'i' }).sort();
+const filterByNameCharacterService = async (name) =>
+  Characters.find({$regex: `${name || ''}`, $options: 'i' });
 
 const deleteByIdCharacterService = (idParams) =>
   Characters.findByIdAndDelete(idParams);
