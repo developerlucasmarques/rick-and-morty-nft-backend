@@ -10,6 +10,7 @@ import {
 
 const createCharacterController = async (req, res) => {
   try {
+
     res.status(201).send(await createCharacterService(req.body));
   } catch (err) {
     res.status(500).send({
@@ -80,22 +81,24 @@ const deleteByIdCharacterController = async (req, res) => {
 
 const filterByNameCharacterController = async (req, res) => {
   try {
-    const filterByName = await filterByNameCharacterService(req.query);
+    let {name} = req.query;
+    name = name.trim()
+    const filterByName = await filterByNameCharacterService(name);
 
     if (filterByName.length === 0) {
       return res
         .status(404)
         .send({ message: 'Desconhecemos esse personagem.' });
     }
-    // res.send(filterByName)
+    
     res.send({
-      Characters: filterByName.map((map) => ({
-        id: map._id,
-        name: map.name,
-        price: map.price,
-        comission: map.comission,
-        image: map.image
-      }))
+      Characters: filterByName.map((character) => ({
+        id: character._id,
+        name: character.name,
+        image: character.image,
+        price: character.price,
+        comission: character.comission,
+  }))
     });
   } catch (err) {
     res.status(500).send({
@@ -104,6 +107,9 @@ const filterByNameCharacterController = async (req, res) => {
     console.log(err);
   }
 };
+
+
+
 
 export {
   findAllCharactersController,

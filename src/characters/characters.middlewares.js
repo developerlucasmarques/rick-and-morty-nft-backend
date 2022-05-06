@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
-import fetch from "node-fetch";
+import mongoose from 'mongoose';
+import fetch from 'node-fetch';
 import {
   findByNameCharacterService,
   findByIdCharacterService,
-} from "./characters.service.js";
+} from './characters.service.js';
 
 export const allCharacters = [];
 
@@ -26,18 +26,16 @@ const findAllCharactersApi = async () => {
       }
     }
   } catch (err) {
-    res.status(500).send({
-      message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
-    });
     console.log(err.message);
   }
 };
+
 findAllCharactersApi();
 
 const verifyObjectBody = (req, res, next) => {
   if (!req.body.name || !req.body.price || !req.body.commission) {
     return res.status(400).send({
-      message: "Existem campos vazios.",
+      message: 'Existem campos vazios.',
     });
   }
   next();
@@ -53,7 +51,7 @@ const verifyCharacterTrue = (req, res, next) => {
     }
   }
   if (!boolean) {
-    return res.status(400).send({ message: "Insira um personagem real." });
+    return res.status(400).send({ message: 'Insira um personagem real.' });
   }
   next();
 };
@@ -64,12 +62,12 @@ const verifyCharacterExistInDb = async (req, res, next) => {
     if (character) {
       return res
         .status(400)
-        .send({ message: "Esse personagem já foi criado." });
+        .send({ message: 'Esse personagem já foi criado.' });
     }
     next();
   } catch (err) {
     res.status(500).send({
-      message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err.message);
   }
@@ -90,12 +88,12 @@ const verifyCharacterUpdateName = async (req, res, next) => {
     if (newCharacter && !check) {
       return res
         .status(400)
-        .send({ message: "Esse personagem já foi criado." });
+        .send({ message: 'Esse personagem já foi criado.' });
     }
     next();
   } catch (err) {
     res.status(500).send({
-      message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err.message);
   }
@@ -104,16 +102,16 @@ const verifyCharacterUpdateName = async (req, res, next) => {
 const verifyIdExistInDb = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).send({ message: "Id inválido." });
+      return res.status(400).send({ message: 'Id inválido.' });
     }
     const findId = await findByIdCharacterService(req.params.id);
     if (!findId) {
-      return res.status(404).send({ message: "Id não encontrado." });
+      return res.status(404).send({ message: 'Id não encontrado.' });
     }
     next();
   } catch (err) {
     res.status(500).send({
-      message: "Ops, tivemos um pequeno problema. Tente novamente mais tarde.",
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
     console.log(err.message);
   }
@@ -123,8 +121,20 @@ const verifyCommissionAmount = (req, res, next) => {
   if (req.body.commission > 80 || req.body.commission < 0) {
     return res
       .status(400)
-      .send({ message: "Defina uma comissão entre 1% e 80%." });
+      .send({ message: 'Defina uma comissão entre 1% e 80%.' });
   }
+  next();
+};
+
+const uppercaseFirstLetter = (req, res, next) => {
+  const string = req.body.name.trim().split(' ');
+  const array = [];
+  for (let i of string) {
+    const push = i[0].toUpperCase() + i.slice(1).toLowerCase();
+    array.push(push);
+  }
+
+  req.body.name = array[0] + ' ' + array[1];
   next();
 };
 
@@ -135,4 +145,5 @@ export {
   verifyIdExistInDb,
   verifyCommissionAmount,
   verifyCharacterUpdateName,
+  uppercaseFirstLetter,
 };

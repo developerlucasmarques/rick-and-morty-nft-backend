@@ -15,6 +15,7 @@ import {
   verifyIdExistInDb,
   verifyObjectBody,
   verifyCharacterUpdateName,
+  uppercaseFirstLetter,
 } from './characters.middlewares.js';
 
 export const router = express.Router();
@@ -24,6 +25,7 @@ router.post(
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
   verifyObjectBody,
+  uppercaseFirstLetter,
   verifyCharacterTrue,
   verifyCharacterExistInDb,
   verifyCommissionAmount,
@@ -40,6 +42,7 @@ router.put(
   authVerifyUserAdminMiddleware,
   verifyIdExistInDb,
   verifyObjectBody,
+  uppercaseFirstLetter,
   verifyCharacterTrue,
   verifyCharacterUpdateName,
   verifyCommissionAmount,
