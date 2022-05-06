@@ -25,8 +25,8 @@ router.post(
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
   verifyObjectBody,
-  uppercaseFirstLetter,
   verifyCharacterTrue,
+  uppercaseFirstLetter,
   verifyCharacterExistInDb,
   verifyCommissionAmount,
   createCharacterController
@@ -42,8 +42,8 @@ router.put(
   authVerifyUserAdminMiddleware,
   verifyIdExistInDb,
   verifyObjectBody,
-  uppercaseFirstLetter,
   verifyCharacterTrue,
+  uppercaseFirstLetter,
   verifyCharacterUpdateName,
   verifyCommissionAmount,
   updateByIdCharacterController
