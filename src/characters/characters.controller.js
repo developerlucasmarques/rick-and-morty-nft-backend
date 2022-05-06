@@ -11,7 +11,7 @@ const createCharacterController = async (req, res) => {
   try {
     req.body.user = req.userId;
     const character = await createCharacterService(req.body);
-    res
+    return res
       .status(201)
       .send({ message: 'NFT criada com sucesso!', character: character });
   } catch (err) {
@@ -31,7 +31,7 @@ const findAllCharactersController = async (req, res) => {
         .status(404)
         .send({ message: 'Não existem personagens cadastrados.' });
     }
-    res.status(200).send(characters);
+    return res.status(200).send(characters);
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -42,7 +42,7 @@ const findAllCharactersController = async (req, res) => {
 
 const findByIdCharacterController = async (req, res) => {
   try {
-    res.status(200).send(await findByIdCharacterService(req.params.id));
+    return res.status(200).send(await findByIdCharacterService(req.params.id));
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -53,7 +53,7 @@ const findByIdCharacterController = async (req, res) => {
 
 const updateByIdCharacterController = async (req, res) => {
   try {
-    res
+    return res
       .status(200)
       .send(await updateByIdCharacterService(req.params.id, req.body));
   } catch (err) {
@@ -68,11 +68,13 @@ const deleteByIdCharacterController = async (req, res) => {
   try {
     const deleted = await deleteByIdCharacterService(req.params.id);
     if (!deleted.name) {
-      res.send(404).send({
+      return res.send(404).send({
         message: `Não encontramos esse personagem em nossa lista. Talvez ele já tenha sido deletado.`,
       });
     }
-    res.status(200).send({ message: `${deleted.name} deletado com sucesso!` });
+    return res
+      .status(200)
+      .send({ message: `${deleted.name} deletado com sucesso!` });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -86,14 +88,13 @@ const filterByNameCharacterController = async (req, res) => {
     let { name } = req.query;
     name = name.trim();
     const filterByName = await filterByNameCharacterService(name);
-
     if (filterByName.length === 0) {
       return res
         .status(404)
         .send({ message: 'Desconhecemos esse personagem.' });
     }
 
-    res.send({
+    return res.send({
       Characters: filterByName.map((character) => ({
         id: character._id,
         name: character.name,
