@@ -38,7 +38,7 @@ const findAllCharactersController = async (req, res) => {
         image: element.image,
         price: element.price,
         commission: element.commission,
-      })),
+      })), 
     });
   } catch (err) {
     res.status(500).send({
