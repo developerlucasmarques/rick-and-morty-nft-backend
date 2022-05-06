@@ -4,19 +4,28 @@ import {
   findAllCharactersService,
   findByIdCharacterService,
   updateByIdCharacterService,
-  filterByNameCharacterService
+  filterByNameCharacterService,
 } from './characters.service.js';
-
 
 const createCharacterController = async (req, res) => {
   try {
+    const { name, image, price, commission } = req.body;
+    const character = await createCharacterService(
+      name,
+      image,
+      price,
+      commission,
+      req.userId
+    );
 
-    res.status(201).send(await createCharacterService(req.body));
+    res
+      .status(201)
+      .send({ message: 'NFT criada com sucesso!', character: character });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
@@ -81,8 +90,8 @@ const deleteByIdCharacterController = async (req, res) => {
 
 const filterByNameCharacterController = async (req, res) => {
   try {
-    let {name} = req.query;
-    name = name.trim()
+    let { name } = req.query;
+    name = name.trim();
     const filterByName = await filterByNameCharacterService(name);
 
     if (filterByName.length === 0) {
@@ -90,7 +99,7 @@ const filterByNameCharacterController = async (req, res) => {
         .status(404)
         .send({ message: 'Desconhecemos esse personagem.' });
     }
-    
+
     res.send({
       Characters: filterByName.map((character) => ({
         id: character._id,
@@ -98,7 +107,7 @@ const filterByNameCharacterController = async (req, res) => {
         image: character.image,
         price: character.price,
         comission: character.comission,
-  }))
+      })),
     });
   } catch (err) {
     res.status(500).send({
@@ -107,9 +116,6 @@ const filterByNameCharacterController = async (req, res) => {
     console.log(err);
   }
 };
-
-
-
 
 export {
   findAllCharactersController,
