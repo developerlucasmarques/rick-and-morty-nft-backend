@@ -1,6 +1,6 @@
 import { Characters } from '../models/Characters.js';
 
-const findAllCharactersService = () => Characters.find().sort({ _id: -1 }).populate("user");
+const findAllCharactersService = () => Characters.find().sort({ _id: -1 });
 
 const createCharacterService = (body) => Characters.create(body);
 
