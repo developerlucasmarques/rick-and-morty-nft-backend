@@ -21,10 +21,8 @@ const updateByIdCharacterService = async (idParams, body) => {
   }
 };
 
-const filterByNameCharacterService = async (name) =>{
-//  return Characters.find({$regex: `${name || ''}`, $options: 'i' });
- return Characters.find({ "name" : { $regex: `${name || ''}`, $options: 'i' }});
-}
+const filterByNameCharacterService = async (name) =>
+ Characters.find({ name : { $regex: `${name || ''}`, $options: 'i' }});
 
 const deleteByIdCharacterService = (idParams) =>
   Characters.findByIdAndDelete(idParams);
