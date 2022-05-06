@@ -31,7 +31,15 @@ const findAllCharactersController = async (req, res) => {
         .status(404)
         .send({ message: 'Não existem personagens cadastrados.' });
     }
-    return res.status(200).send(characters);
+    return res.status(200).send({
+      results: characters.map((element) => ({
+        id: element._id,
+        name: element.name,
+        image: element.image,
+        price: element.price,
+        commission: element.commission,
+      })),
+    });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
