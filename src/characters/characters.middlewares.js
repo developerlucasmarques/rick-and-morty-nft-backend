@@ -42,9 +42,10 @@ const verifyObjectBody = (req, res, next) => {
 };
 
 const verifyCharacterTrue = (req, res, next) => {
+  req.body.name = req.body.name.trim();
   let boolean = false;
   for (let i of allCharacters) {
-    if (req.body.name == i.name) {
+    if (req.body.name.toLowerCase() == i.name.toLowerCase()) {
       req.body.image = i.image;
       boolean = true;
       break;
@@ -127,14 +128,18 @@ const verifyCommissionAmount = (req, res, next) => {
 };
 
 const uppercaseFirstLetter = (req, res, next) => {
-  const string = req.body.name.trim().split(' ');
-  const array = [];
-  for (let i of string) {
-    const push = i[0].toUpperCase() + i.slice(1).toLowerCase();
-    array.push(push);
+  const reqName = req.body.name.split(' ');
+  const nameUpdatedArray = [];
+  for (let i = 0; i < reqName.length; i++) {
+    let name = reqName[i];
+    const nameUpdated = name[0].toUpperCase() + name.slice(1).toLowerCase();
+    nameUpdatedArray.push(nameUpdated);
   }
-
-  req.body.name = array[0] + ' ' + array[1];
+  let nameOk = '';
+  for (let i = 0; i < nameUpdatedArray.length; i++) {
+    nameOk = nameOk + nameUpdatedArray[i] + ' ';
+  }
+  req.body.name = nameOk.trim();
   next();
 };
 
