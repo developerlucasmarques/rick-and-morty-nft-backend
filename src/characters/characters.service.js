@@ -2,7 +2,15 @@ import { Characters } from '../models/Characters.js';
 
 const findAllCharactersService = () => Characters.find();
 
-const createCharacterService = (body) => Characters.create(body);
+const createCharacterService = (name, image, price, commission, userId) => {
+  return Characters.create({
+    name: name,
+    image: image,
+    price: price,
+    commission: commission,
+    user: userId,
+  });
+};
 
 const findByNameCharacterService = (name) => Characters.findOne({ name: name });
 
@@ -22,7 +30,7 @@ const updateByIdCharacterService = async (idParams, body) => {
 };
 
 const filterByNameCharacterService = async (name) =>
- Characters.find({ name : { $regex: `${name || ''}`, $options: 'i' }});
+  Characters.find({ name: { $regex: `${name || ''}`, $options: 'i' } });
 
 const deleteByIdCharacterService = (idParams) =>
   Characters.findByIdAndDelete(idParams);
