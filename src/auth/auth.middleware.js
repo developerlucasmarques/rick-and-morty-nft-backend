@@ -29,7 +29,7 @@ const authLoginMiddleware = (req, res, next) => {
     if (err || !user || !user.id) {
       return res.status(401).send({ message: "Token inválido!" });
     }
-    req.userID = user.id;
+    req.userId = user.id;
 
     return next();
   });
@@ -37,7 +37,7 @@ const authLoginMiddleware = (req, res, next) => {
 
 const authVerifyUserAdminMiddleware = async (req, res, next) => {
   try {
-    const user = await findByIdUserService(req.userID);
+    const user = await findByIdUserService(req.userId);
     if (!user.admin) {
       return res.status(401).send({ message: "Sem permissão!" });
     }
