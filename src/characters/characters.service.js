@@ -2,15 +2,7 @@ import { Characters } from '../models/Characters.js';
 
 const findAllCharactersService = () => Characters.find();
 
-const createCharacterService = (name, image, price, commission, userId) => {
-  return Characters.create({
-    name: name,
-    image: image,
-    price: price,
-    commission: commission,
-    user: userId,
-  });
-};
+const createCharacterService = (body) => Characters.create(body);
 
 const findByNameCharacterService = (name) => Characters.findOne({ name: name });
 

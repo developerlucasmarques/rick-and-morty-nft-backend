@@ -9,15 +9,8 @@ import {
 
 const createCharacterController = async (req, res) => {
   try {
-    const { name, image, price, commission } = req.body;
-    const character = await createCharacterService(
-      name,
-      image,
-      price,
-      commission,
-      req.userId
-    );
-
+    req.body.user = req.userId;
+    const character = await createCharacterService(req.body);
     res
       .status(201)
       .send({ message: 'NFT criada com sucesso!', character: character });
