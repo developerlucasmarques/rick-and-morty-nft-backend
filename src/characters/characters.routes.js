@@ -1,12 +1,15 @@
 import express from 'express';
-import { authLoginMiddleware, authVerifyUserAdminMiddleware } from '../auth/auth.middleware.js';
+import {
+  authLoginMiddleware,
+  authVerifyUserAdminMiddleware,
+} from '../auth/auth.middleware.js';
 import {
   createCharacterController,
   deleteByIdCharacterController,
   findAllCharactersController,
   findByIdCharacterController,
   updateByIdCharacterController,
-  filterByNameCharacterController
+  filterByNameCharacterController,
 } from './characters.controller.js';
 import {
   verifyCharacterExistInDb,
@@ -33,7 +36,12 @@ router.post(
 );
 
 router.get('/', authLoginMiddleware, findAllCharactersController);
-router.get('/find/:id', authLoginMiddleware, verifyIdExistInDb, findByIdCharacterController);
+router.get(
+  '/find/:id',
+  authLoginMiddleware,
+  verifyIdExistInDb,
+  findByIdCharacterController
+);
 router.get('/search', filterByNameCharacterController);
 
 router.put(
@@ -48,4 +56,10 @@ router.put(
   verifyCommissionAmount,
   updateByIdCharacterController
 );
-router.delete('/delete/:id', authLoginMiddleware, authVerifyUserAdminMiddleware, verifyIdExistInDb, deleteByIdCharacterController);
+router.delete(
+  '/delete/:id',
+  authLoginMiddleware,
+  authVerifyUserAdminMiddleware,
+  verifyIdExistInDb,
+  deleteByIdCharacterController
+);

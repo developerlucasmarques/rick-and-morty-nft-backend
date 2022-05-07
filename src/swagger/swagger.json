@@ -19,6 +19,52 @@
     }
   ],
   "paths": {
+    "/create-admin": {
+      "post": {
+        "summary": "Criar o Admin",
+        "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens e só pode existir um Admin",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "name": "Admin",
+                    "username": "Admin",
+                    "email": "admin@admin.com",
+                    "password": "admins",
+                    "photo": "https://www.bitcao.com.br/blog/wp-content/uploads/2016/12/wsi-imageoptim-perroenlaoficina-720x480.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'photo'. || Esse usuário já existe! || Já existe um admin criado. || Erro ao criar usuário!"
+          },
+          "201": {
+            "description": "Admin criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/create": {
       "post": {
         "summary": "Criar um novo usuário",
@@ -45,11 +91,14 @@
           }
         },
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
           "400": {
-            "description": "Bad request"
+            "description": "Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'photo'. || Esse usuário já existe! || Erro ao criar usuário!"
           },
           "201": {
-            "description": "Created",
+            "description": "Usuário cadastrado com sucesso!",
             "content": {
               "application/json": {
                 "schemma": {
@@ -65,11 +114,18 @@
     "/users": {
       "get": {
         "summary": "Buscar todos os usuários",
-        "description": "Rota responsável por buscar todos os usuários",
+        "description": "Rota responsável por buscar todos os usuários. É necessário autenticação de Admin",
         "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "401": {
+            "description": "Token inválido || O token não foi informado! || Token mal formatado! || Sem permissão!"
+          },
           "404": {
-            "description": "Not Found"
+            "description": "Não existem usuários cadastrados."
           },
           "200": {
             "description": "OK",
@@ -89,9 +145,10 @@
     },
     "/users/{id}": {
       "get": {
-        "summary": "Buscar um usuário por ID",
+        "summary": "Buscar um usuário por ID. É necessário autenticação de Admin",
         "description": "Rota responsável por buscar um único usuário por ID",
         "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "in": "path",
@@ -102,11 +159,14 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not Found"
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
           },
-          "400": {
-            "description": "Bad Request"
+          "401": {
+            "description": "Token inválido || O token não foi informado! || Token mal formatado! || Sem permissão! || Id inválido"
+          },
+          "404": {
+            "description": "Não existem usuários com esse Id!"
           },
           "200": {
             "description": "OK",
@@ -114,7 +174,9 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/User"
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
               }
             }
@@ -125,7 +187,7 @@
     "/auth/login": {
       "post": {
         "summary": "Entrar em Rick and Morty NFTs",
-        "description": "Rota responsável fazer o login de um usuário cadastrado",
+        "description": "Rota responsável fazer o login de usuário e Admin",
         "tags": ["Auth"],
         "requestBody": {
           "content": {
@@ -136,8 +198,8 @@
               "examples": {
                 "User": {
                   "value": {
-                    "email": "neymar@gmail.com",
-                    "password": "123456"
+                    "email": "admin@admin.com",
+                    "password": "admins"
                   }
                 }
               }
@@ -145,8 +207,14 @@
           }
         },
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde.."
+          },
+          "400": {
+            "description": "Senha inválida."
+          },
           "404": {
-            "description": "Not Found"
+            "description": "Usuário não encontrado."
           },
           "200": {
             "description": "OK"
@@ -157,8 +225,9 @@
     "/characters/create": {
       "post": {
         "summary": "Cadastrar um personagem",
-        "description": "Rota responsável por cadastrar um novo personagem",
+        "description": "Rota responsável por cadastrar um novo personagem. É necessário autenticação de Admin",
         "tags": ["Characters"],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -178,19 +247,17 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad Request"
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde.."
           },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Characters"
-                }
-              }
-            }
+          "400": {
+            "description": "Existem campos vazios. || Insira um personagem real. || Esse personagem já foi criado. || Defina uma comissão entre 1% e 80%."
+          },
+          "401": {
+            "description": "Sem permissão! || Token mal formatado! || Token inválido || O token não foi informado!"
+          },
+          "200": {
+            "description": "NFT criada com sucesso!"
           }
         }
       }
@@ -201,8 +268,14 @@
         "description": "Rota responsável por listar todos os personagens",
         "tags": ["Characters"],
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "401": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado!"
+          },
           "404": {
-            "description": "Not Found"
+            "description": "Não encontramos personagens cadastrados."
           },
           "200": {
             "description": "OK",
@@ -235,19 +308,64 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Id inválido."
+          },
+          "401": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado!"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Id não encontrado."
           },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Characters"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Characters"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/search": {
+      "get": {
+        "summary": "Filtra os personagens pelo Nome",
+        "description": "Rota responsável por filtrar os personagens pelo nome.",
+        "tags": ["Characters"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "type": "string",
+            "description": "Nome do personagem para Filtrar",
+            "required": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "404": {
+            "description": "Desconhecemos esse personagem."
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Characters"
+                  }
                 }
               }
             }
@@ -260,6 +378,7 @@
         "summary": "Editar um personagem pelo ID",
         "description": "Rota responsável por editar un personagem pelo ID",
         "tags": ["Characters"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -288,19 +407,20 @@
           }
         },
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde.."
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Existem campos vazios. || Insira um personagem real. || Esse personagem já foi criado. || Defina uma comissão entre 1% e 80%. || Id inválido."
+          },
+          "404": {
+            "description": "Id não encontrado."
+          },
+          "401": {
+            "description": "Sem permissão! || Token mal formatado! || Token inválido || O token não foi informado!"
           },
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Characters"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -310,6 +430,7 @@
         "summary": "Apagar um personagem pelo ID",
         "description": "Rota responsável por apagar um personagem pelo ID",
         "tags": ["Characters"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -320,11 +441,20 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
           "400": {
-            "description": "Bad Request"
+            "description": "Id inválido."
+          },
+          "401": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Sem permissão!"
+          },
+          "404": {
+            "description": "Id não encontrado. || Não encontramos esse personagem em nossa lista. Talvez ele já tenha sido deletado."
           },
           "200": {
-            "description": "OK"
+            "description": "*Nome do personagem* deletado com sucesso!"
           }
         }
       }
@@ -373,6 +503,20 @@
           },
           "commission": {
             "type": "number"
+          }
+        }
+      },
+      "Cart":{
+        "type": "object",
+        "properties": {
+          "characters": {
+            "type": "array"
+          },
+          "user": {
+            "type": "string"
+          },
+          "finished": {
+            "type": "boolean"
           }
         }
       }

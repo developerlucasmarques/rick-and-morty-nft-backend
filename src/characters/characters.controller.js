@@ -30,7 +30,7 @@ const findAllCharactersController = async (req, res) => {
     if (characters.length == 0) {
       return res
         .status(404)
-        .send({ message: 'Não existem personagens cadastrados.' });
+        .send({ message: 'Não encontramos personagens cadastrados.' });
     }
     return res.status(200).send({
       results: characters.map((element) => ({

@@ -6,14 +6,15 @@ import {
 } from './users.service.js';
 
 const checkAllFields = (req, res, next) => {
-  try {const { name, username, email, password, photo } = req.body;
-  if (!name || !username || !email || !password || !photo) {
-    return res.status(400).send({
-      message:
-        "Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'photo'.",
-    });
-  }
-  next();
+  try {
+    const { name, username, email, password, photo } = req.body;
+    if (!name || !username || !email || !password || !photo) {
+      return res.status(400).send({
+        message:
+          "Alguns campos estão faltando. Os campos são: 'name', 'username', email, 'password' e 'photo'.",
+      });
+    }
+    next();
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -49,7 +50,7 @@ const verifyExistingUserById = async (req, res, next) => {
     // console.log(findId.username)
     if (!findId) {
       return res.status(404).send({
-        message: 'Não encontramos esse Id!',
+        message: 'Não existem usuários com esse Id!',
       });
     }
     next();
