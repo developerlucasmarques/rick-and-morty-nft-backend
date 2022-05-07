@@ -8,8 +8,13 @@ import {
 const createAndAddCartController = async (req, res) => {
   try {
     const character = await findByIdCharacterService(req.params.id);
+    if (character.acquired) {
+      return res
+        .status(400)
+        .send({ message: `${character.name} não está disponível.` });
+    }
     const cartUser = await findByIdCartUserService(req.userId);
-    
+
     if (cartUser) {
       for (let i of cartUser.characters) {
         if (req.params.id == i) {
@@ -42,4 +47,24 @@ const createAndAddCartController = async (req, res) => {
   }
 };
 
-export { createAndAddCartController };
+const findAllCartCharactersController = async (req, res) => {
+  try {
+    const cart = await findByIdCartUserService(req.userId);
+    if (!cart) {
+      return res.status(404).send({ message: 'Seu carrinho está vazio' });
+    }
+    const characters = [];
+    for (let i of cart.characters) {
+      const character = await findByIdCharacterService(i);
+      characters.push(character);
+    }
+    return res.status(200).send({ results: characters });
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+};
+
+export { createAndAddCartController, findAllCartCharactersController };
