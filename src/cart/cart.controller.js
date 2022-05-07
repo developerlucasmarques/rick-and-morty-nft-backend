@@ -15,7 +15,7 @@ const createCartController = async (req, res) => {
         .status(201)
         .send({ message: `${character.name} foi adcionado(a) ao carrinho!` });
     }
-    
+
     req.body.finished = false;
     await createCartService(req.userId, req.body.finished);
     await pushCartService(req.params.id);

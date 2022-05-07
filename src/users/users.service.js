@@ -11,7 +11,7 @@ const findAllUserService = () => User.find();
 
 const findByIdUserService = (idUser) => User.findById(idUser);
 
-const findByAdminUserService = (admin) => User.findOne({admin: admin});
+const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 
 export {
   findByEmailUserService,
@@ -19,5 +19,5 @@ export {
   findAllUserService,
   findByIdUserService,
   findByUsernameUserService,
-  findByAdminUserService
+  findByAdminUserService,
 };
