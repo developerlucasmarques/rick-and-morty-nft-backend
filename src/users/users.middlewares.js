@@ -6,7 +6,7 @@ import {
 } from './users.service.js';
 
 const checkAllFields = (req, res, next) => {
-  const { name, username, email, password, photo } = req.body;
+  try {const { name, username, email, password, photo } = req.body;
   if (!name || !username || !email || !password || !photo) {
     return res.status(400).send({
       message:
@@ -14,6 +14,12 @@ const checkAllFields = (req, res, next) => {
     });
   }
   next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
 };
 
 const verifyExistingUserByEmail = async (req, res, next) => {
@@ -30,7 +36,7 @@ const verifyExistingUserByEmail = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
@@ -51,7 +57,7 @@ const verifyExistingUserById = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 

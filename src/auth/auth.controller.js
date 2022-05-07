@@ -24,7 +24,7 @@ const authLoginController = async (req, res) => {
     res.status(500).semd({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
