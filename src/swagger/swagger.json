@@ -505,6 +505,20 @@
             "type": "number"
           }
         }
+      },
+      "Cart":{
+        "type": "object",
+        "properties": {
+          "characters": {
+            "type": "array"
+          },
+          "user": {
+            "type": "string"
+          },
+          "finished": {
+            "type": "boolean"
+          }
+        }
       }
     }
   }
