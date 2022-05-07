@@ -39,7 +39,7 @@ const findAllCharactersController = async (req, res) => {
         image: element.image,
         price: element.price,
         commission: element.commission,
-      })), 
+      })),
     });
   } catch (err) {
     res.status(500).send({
@@ -97,6 +97,7 @@ const filterByNameCharacterController = async (req, res) => {
     let { name } = req.query;
     name = name.trim();
     const filterByName = await filterByNameCharacterService(name);
+    console.log(filterByName);
     if (filterByName.length === 0) {
       return res
         .status(404)
