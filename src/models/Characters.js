@@ -10,6 +10,7 @@ const CharactersSchema = new mongoose.Schema({
     ref: 'users',
     required: true,
   },
+  acquired: { type: Boolean, required: true },
 });
 
 export const Characters = mongoose.model('characters', CharactersSchema);
