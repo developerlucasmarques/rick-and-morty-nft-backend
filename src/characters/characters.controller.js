@@ -10,6 +10,7 @@ import {
 const createCharacterController = async (req, res) => {
   try {
     req.body.user = req.userId;
+    req.body.acquired = false;
     const character = await createCharacterService(req.body);
     return res
       .status(201)
@@ -55,7 +56,7 @@ const findByIdCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
@@ -68,7 +69,7 @@ const updateByIdCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
@@ -87,7 +88,7 @@ const deleteByIdCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
@@ -115,7 +116,7 @@ const filterByNameCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err);
+    console.log(err.message);
   }
 };
 
