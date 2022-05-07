@@ -18,24 +18,18 @@ const createAndAddCartController = async (req, res) => {
             .send({ message: 'Você já adicionou essa NFT ao carrinho.' });
         }
       }
-      await addCharacterCartService(req.params.id);
+      await addCharacterCartService(cartUser._id, req.params.id);
       return res
         .status(201)
         .send({ message: `${character.name} foi adcionado(a) ao carrinho!` });
     }
 
-<<<<<<< HEAD
     const cart = await createCartService(
       req.userId,
       (req.body.finished = false)
     );
     cart.characters.push(req.params.id);
     await cart.save();
-=======
-    req.body.finished = false;
-    await createCartService(req.userId, req.body.finished);
-    await pushCartService(req.params.id);
->>>>>>> 0fdd38d7e0c79169151846398c4bf6b56509cd9b
 
     return res.status(201).send({
       message: `Carrinho criado e ${character.name} adcionado(a)!`,
