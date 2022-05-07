@@ -1,6 +1,7 @@
 import express from 'express';
-import { addCharacterCartController } from './cart.controller.js';
+import { authLoginMiddleware } from '../auth/auth.middleware.js';
+import { createCartController } from './cart.controller.js';
 
 export const cartRouter = express.Router();
 
-cartRouter.post('/add', addCharacterCartController);
+cartRouter.post('/create/:id', authLoginMiddleware, createCartController);
