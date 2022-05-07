@@ -1,24 +1,35 @@
 import { findByIdCharacterService } from '../characters/characters.service.js';
 import {
   createCartService,
-  findOneCartService,
-  pushCartService,
+  findByIdCartUserService,
+  addCharacterCartService,
 } from './cart.service.js';
 
-const createCartController = async (req, res) => {
+const createAndAddCartController = async (req, res) => {
   try {
     const character = await findByIdCharacterService(req.params.id);
-    const user = await findOneCartService(req.userId);
-    if (user) {
-      await pushCartService(req.params.id);
+    const cartUser = await findByIdCartUserService(req.userId);
+    
+    if (cartUser) {
+      for (let i of cartUser.characters) {
+        if (req.params.id == i) {
+          return res
+            .status(400)
+            .send({ message: 'Você já adicionou essa NFT ao carrinho.' });
+        }
+      }
+      await addCharacterCartService(req.params.id);
       return res
         .status(201)
         .send({ message: `${character.name} foi adcionado(a) ao carrinho!` });
     }
-    
-    req.body.finished = false;
-    await createCartService(req.userId, req.body.finished);
-    await pushCartService(req.params.id);
+
+    const cart = await createCartService(
+      req.userId,
+      (req.body.finished = false)
+    );
+    cart.characters.push(req.params.id);
+    await cart.save();
 
     return res.status(201).send({
       message: `Carrinho criado e ${character.name} adcionado(a)!`,
@@ -31,4 +42,4 @@ const createCartController = async (req, res) => {
   }
 };
 
-export { createCartController };
+export { createAndAddCartController };
