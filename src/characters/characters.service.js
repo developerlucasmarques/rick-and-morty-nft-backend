@@ -27,6 +27,9 @@ const filterByNameCharacterService = async (name) =>
 const deleteByIdCharacterService = (idParams) =>
   Characters.findByIdAndDelete(idParams);
 
+const updateByIdAcquiredCharacterService = (idCharacter) =>
+  Characters.findOneAndUpdate({ _id: idCharacter }, { acquired: true });
+
 export {
   findAllCharactersService,
   createCharacterService,
@@ -35,4 +38,5 @@ export {
   updateByIdCharacterService,
   deleteByIdCharacterService,
   filterByNameCharacterService,
+  updateByIdAcquiredCharacterService,
 };
