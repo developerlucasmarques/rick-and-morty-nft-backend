@@ -1,9 +1,20 @@
-import { findByIdCharacterService } from '../characters/characters.service.js';
+import {
+  findByIdCharacterService,
+  updateByIdAcquiredCharacterService,
+} from '../characters/characters.service.js';
+import {
+  addPropertiesUserService,
+  findByAdminAndUpdateCoinsService,
+  findByAdminUserService,
+  findByIdAndUpdateCoinsService,
+  findByIdUserService,
+} from '../users/users.service.js';
 import {
   createCartService,
   findByIdCartUserService,
   addCharacterCartService,
   deleteCharacterCartService,
+  deleteCartService,
 } from './cart.service.js';
 
 const createAndAddCartController = async (req, res) => {
@@ -90,8 +101,59 @@ const deleteCharacterCartController = async (req, res) => {
   }
 };
 
+const buyCharactersCartController = async (req, res) => {
+  try {
+    const cart = await findByIdCartUserService(req.userId);
+    const user = await findByIdUserService(req.userId);
+    const characters = [];
+    for (let i of cart.characters) {
+      const character = await findByIdCharacterService(i);
+      characters.push(character);
+    }
+    let totalPrice = 0;
+    for (let i of characters) {
+      totalPrice += i.price;
+    }
+
+    if (user.coins < totalPrice) {
+      return res
+        .status(400)
+        .send({ message: 'Moedas insuficientes para fazer a compra' });
+    }
+
+    if (user.coins >= totalPrice) {
+      for (let i of characters) {
+        i.acquired = true;
+        await updateByIdAcquiredCharacterService(i._id);
+      }
+      const newCoinsUser = user.coins - totalPrice;
+      await findByIdAndUpdateCoinsService(req.userId, newCoinsUser);
+      const admin = await findByAdminUserService(true);
+      const newCoinsAdmin = admin.coins + totalPrice;
+      findByAdminAndUpdateCoinsService(newCoinsAdmin);
+    }
+
+    for (let i of characters) {
+      await addPropertiesUserService(req.userId, i);
+    }
+
+    for (let i = 0; i < characters.length; i++) {
+      await deleteCharacterCartService(cart._id, cart.characters[i]);
+    }
+    await deleteCartService(cart._id);
+
+    res.status(200).send({ message: 'Compra finalizada com sucesso' });
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+};
+
 export {
   createAndAddCartController,
   findAllCartCharactersController,
   deleteCharacterCartController,
+  buyCharactersCartController,
 };
