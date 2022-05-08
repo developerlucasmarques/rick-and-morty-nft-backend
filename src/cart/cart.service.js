@@ -15,12 +15,19 @@ const addCharacterCartService = (cartId, characterId) =>
 
 const findByIdCartUserService = (userId) => Cart.findOne({ user: userId });
 
-const findByIdCartCharacterService = (characterId) =>
-  Cart.findOne({ characters: characterId });
+const deleteCharacterCartService = (cartId, characterId) =>
+  Cart.findOneAndUpdate(
+    { _id: cartId },
+    {
+      $pull: {
+        characters: characterId,
+      },
+    }
+  );
 
 export {
   createCartService,
   findByIdCartUserService,
   addCharacterCartService,
-  findByIdCartCharacterService,
+  deleteCharacterCartService,
 };
