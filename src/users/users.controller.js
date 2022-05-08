@@ -111,9 +111,38 @@ const findBydIdUserController = async (req, res) => {
   }
 };
 
+const myAccountController = async (req, res) => {
+  try {
+    const user = await findByIdUserService(req.userId);
+    return res.status(200).send(user);
+  } catch (err) {
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+};
+
+const findPropertiesController = async (req, res) => {
+  try {
+    const user = await findByIdUserService(req.userId);
+    if (!user.properties || user.properties.lenght == 0) {
+      return res.status(404).send({ message: 'Nenhuma NFT encontrada' });
+    }
+    return res.status(200).send({ properties: user.properties });
+  } catch (err) {
+    res.status(500).semd({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+};
+
 export {
   createUserController,
   findAllUserController,
   findBydIdUserController,
   createUserAdminController,
+  myAccountController,
+  findPropertiesController,
 };
