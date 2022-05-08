@@ -25,9 +25,12 @@ const deleteCharacterCartService = (cartId, characterId) =>
     }
   );
 
+const deleteCartService = (idCart) => Cart.findByIdAndDelete(idCart);
+
 export {
   createCartService,
   findByIdCartUserService,
   addCharacterCartService,
   deleteCharacterCartService,
+  deleteCartService,
 };
