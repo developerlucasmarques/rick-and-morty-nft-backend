@@ -9,6 +9,8 @@ import {
   createUserController,
   findAllUserController,
   findBydIdUserController,
+  findPropertiesController,
+  myAccountController,
 } from './users.controller.js';
 
 import {
@@ -32,15 +34,22 @@ userRouter.post(
 );
 
 userRouter.get(
-  '/',
+  '/find=all',
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
   findAllUserController
 );
 userRouter.get(
-  '/:id',
+  '/find/:id',
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
   verifyExistingUserById,
   findBydIdUserController
+);
+
+userRouter.get('/my-account', authLoginMiddleware, myAccountController);
+userRouter.get(
+  '/find-properties',
+  authLoginMiddleware,
+  findPropertiesController
 );
