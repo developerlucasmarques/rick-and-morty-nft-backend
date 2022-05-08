@@ -13,6 +13,23 @@ const findByIdUserService = (idUser) => User.findById(idUser);
 
 const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 
+const findByIdAndUpdateCoinsService = (idUser, newCoins) =>
+  User.findByIdAndUpdate({ _id: idUser }, { coins: newCoins });
+
+const findByAdminAndUpdateCoinsService = async (newCoins) => {
+  await User.findOneAndUpdate({ admin: true }, { coins: newCoins });
+};
+
+const addPropertiesUserService = (idUser, characters) =>
+  User.findOneAndUpdate(
+    { _id: idUser },
+    {
+      $push: {
+        properties: characters,
+      },
+    }
+  );
+
 export {
   findByEmailUserService,
   createUserService,
@@ -20,4 +37,7 @@ export {
   findByIdUserService,
   findByUsernameUserService,
   findByAdminUserService,
+  findByIdAndUpdateCoinsService,
+  findByAdminAndUpdateCoinsService,
+  addPropertiesUserService,
 };
