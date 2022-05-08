@@ -34,7 +34,7 @@ userRouter.post(
 );
 
 userRouter.get(
-  '/find=all',
+  '/find-all',
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
   findAllUserController
