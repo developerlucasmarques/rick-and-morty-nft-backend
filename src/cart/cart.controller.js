@@ -3,6 +3,7 @@ import {
   createCartService,
   findByIdCartUserService,
   addCharacterCartService,
+  deleteCharacterCartService,
 } from './cart.service.js';
 
 const createAndAddCartController = async (req, res) => {
@@ -50,9 +51,6 @@ const createAndAddCartController = async (req, res) => {
 const findAllCartCharactersController = async (req, res) => {
   try {
     const cart = await findByIdCartUserService(req.userId);
-    if (!cart) {
-      return res.status(404).send({ message: 'Seu carrinho está vazio' });
-    }
     const characters = [];
     for (let i of cart.characters) {
       const character = await findByIdCharacterService(i);
@@ -67,4 +65,33 @@ const findAllCartCharactersController = async (req, res) => {
   }
 };
 
-export { createAndAddCartController, findAllCartCharactersController };
+const deleteCharacterCartController = async (req, res) => {
+  try {
+    const cart = await findByIdCartUserService(req.userId);
+    let check = false;
+    for (let i of cart.characters) {
+      if (i == req.params.id) {
+        check = true;
+      }
+    }
+    if (!check) {
+      return res
+        .status(400)
+        .send({ message: 'Este item não existe no carrinho' });
+    }
+
+    await deleteCharacterCartService(cart._id, req.params.id);
+    return res.status(200).send({ message: 'NFT deletada do carrinho' });
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+};
+
+export {
+  createAndAddCartController,
+  findAllCartCharactersController,
+  deleteCharacterCartController,
+};
