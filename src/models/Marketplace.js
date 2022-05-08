@@ -5,4 +5,4 @@ const MarketplaceSchema = new mongoose.Schema({
   characters: { type: Array, required: true },
 });
 
-export const Cart = mongoose.model('marketplaces', MarketplaceSchema);
+export const Marketplace = mongoose.model('marketplaces', MarketplaceSchema);
