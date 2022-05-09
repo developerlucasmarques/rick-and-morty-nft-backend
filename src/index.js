@@ -20,8 +20,8 @@ app.use(express.json());
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
 app.use('/characters', characterRouter);
-app.use('/cart/', cartRouter);
-app.use('/marketplace/', marketplaceRouter);
+app.use('/cart', cartRouter);
+app.use('/marketplace', marketplaceRouter);
 app.use('/api-docs', swaggerRouter);
 
 app.listen(port, () => {

@@ -35,14 +35,22 @@ characterRouter.post(
   createCharacterController
 );
 
-characterRouter.get('/', authLoginMiddleware, findAllCharactersController);
+characterRouter.get(
+  '/find-all',
+  authLoginMiddleware,
+  findAllCharactersController
+);
 characterRouter.get(
   '/find/:id',
   authLoginMiddleware,
   verifyIdExistInDb,
   findByIdCharacterController
 );
-characterRouter.get('/search', authLoginMiddleware, filterByNameCharacterController);
+characterRouter.get(
+  '/search',
+  authLoginMiddleware,
+  filterByNameCharacterController
+);
 
 characterRouter.put(
   '/update/:id',
