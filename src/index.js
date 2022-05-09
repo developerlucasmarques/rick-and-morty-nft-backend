@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import { connectDatabase } from './database/database.js';
-import { router } from './characters/characters.routes.js';
+import { characterRouter } from './characters/characters.routes.js';
 import { userRouter } from './users/users.routes.js';
 import { authRouter } from './auth/auth.routes.js';
 import { swaggerRouter } from './swagger/swagger.routes.js';
@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
-app.use('/characters', router);
+app.use('/characters', characterRouter);
 app.use('/cart/', cartRouter);
 app.use('/marketplace/', marketplaceRouter);
 app.use('/api-docs', swaggerRouter);
