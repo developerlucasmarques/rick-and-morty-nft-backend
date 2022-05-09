@@ -5,6 +5,7 @@ import {
 import {
   addCharacterMarketplaceService,
   createSaleService,
+  findAllMarketplaceService,
   findByIdMarketplaceUserService,
 } from './marketplace.service.js';
 
@@ -69,12 +70,11 @@ const createSaleController = async (req, res) => {
       if (i._id.equals(req.params.id)) {
         i.price = req.body.price;
         await createSaleService(req.userId, i);
+        return res
+          .status(201)
+          .send({ message: `${i.name} adcionado ao marketplace.` });
       }
     }
-
-    return res
-      .status(201)
-      .send({ message: 'Ordem de venda criada com sucesso' });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -83,4 +83,19 @@ const createSaleController = async (req, res) => {
   }
 };
 
-export { createSaleController };
+const findAllMarketplaceController = async (req, res) => {
+  try {
+    const marketplaceAll = await findAllMarketplaceService();
+    if (!marketplaceAll) {
+      return res.status(404).send({ message: 'Marketplace vazio' });
+    }
+    return res.status(200).send({ results: marketplaceAll });
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+};
+
+export { createSaleController, findAllMarketplaceController };

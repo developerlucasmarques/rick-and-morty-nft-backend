@@ -16,8 +16,11 @@ const addCharacterMarketplaceService = (userId, character) =>
 const findByIdMarketplaceUserService = (userId) =>
   Marketplace.findOne({ user: userId });
 
+const findAllMarketplaceService = () => Marketplace.find();
+
 export {
   createSaleService,
   addCharacterMarketplaceService,
   findByIdMarketplaceUserService,
+  findAllMarketplaceService,
 };
