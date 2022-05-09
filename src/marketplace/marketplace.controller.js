@@ -2,7 +2,11 @@ import {
   findByIdUserService,
   // updateByIdPriceCharacterUser,
 } from '../users/users.service.js';
-import { createSaleService } from './marketplace.service.js';
+import {
+  addCharacterMarketplaceService,
+  createSaleService,
+  findByIdMarketplaceUserService,
+} from './marketplace.service.js';
 
 const createSaleController = async (req, res) => {
   try {
@@ -17,7 +21,6 @@ const createSaleController = async (req, res) => {
         check = true;
       }
     }
-
     if (!check) {
       return res
         .status(400)
@@ -25,6 +28,26 @@ const createSaleController = async (req, res) => {
     }
     if (!req.body.price || isNaN(req.body.price)) {
       return res.status(400).send({ message: 'Digite um valor para venda' });
+    }
+
+    const userMarketplace = await findByIdMarketplaceUserService(req.userId);
+    if (userMarketplace) {
+      for (let i of userMarketplace.characters) {
+        if (i._id.equals(req.params.id)) {
+          return res
+            .status(400)
+            .send({ message: `${i.name} já está à venda.` });
+        }
+      }
+      for (let i of user.properties) {
+        if (i._id.equals(req.params.id)) {
+          i.price = req.body.price;
+          await addCharacterMarketplaceService(req.userId, i);
+          return res
+            .status(201)
+            .send({ message: `${i.name} adcionado ao marketplace.` });
+        }
+      }
     }
 
     // for (let i = 0; i < user.properties.length; i++) {
@@ -45,9 +68,7 @@ const createSaleController = async (req, res) => {
     for (let i of user.properties) {
       if (i._id.equals(req.params.id)) {
         i.price = req.body.price;
-        const userId = req.userId;
-        const newI = i;
-        await createSaleService(userId, newI);
+        await createSaleService(req.userId, i);
       }
     }
 
