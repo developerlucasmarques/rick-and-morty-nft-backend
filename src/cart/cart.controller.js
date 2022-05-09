@@ -1,4 +1,5 @@
 import {
+  deleteByIdCharacterService,
   findByIdCharacterService,
   updateByIdAcquiredCharacterService,
 } from '../characters/characters.service.js';
@@ -135,11 +136,9 @@ const buyCharactersCartController = async (req, res) => {
 
     for (let i of characters) {
       await addPropertiesUserService(req.userId, i);
+      await deleteByIdCharacterService(i._id)
     }
-
-    for (let i = 0; i < characters.length; i++) {
-      await deleteCharacterCartService(cart._id, cart.characters[i]);
-    }
+    
     await deleteCartService(cart._id);
 
     res.status(200).send({ message: 'Compra finalizada com sucesso' });
