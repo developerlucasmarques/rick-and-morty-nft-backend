@@ -7,13 +7,14 @@ import {
   deleteCharacterCartController,
   findAllCartCharactersController,
 } from './cart.controller.js';
-import { verifyEmptyCartMiddleware } from './cart.middleware.js';
+import { verifyAdminCartMiddleware, verifyEmptyCartMiddleware } from './cart.middleware.js';
 
 export const cartRouter = express.Router();
 
 cartRouter.post(
   '/create/:id',
   authLoginMiddleware,
+  verifyAdminCartMiddleware,
   verifyIdExistInDb,
   createAndAddCartController
 );
