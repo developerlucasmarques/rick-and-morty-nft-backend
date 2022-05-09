@@ -18,9 +18,20 @@ const findByIdMarketplaceUserService = (userId) =>
 
 const findAllMarketplaceService = () => Marketplace.find();
 
+const deleteCharacterMarketplaceService = (userId, characterId) =>
+  Marketplace.findOneAndUpdate(
+    { user: userId },
+    {
+      $pull: {
+        characters: characterId,
+      },
+    }
+  );
+
 export {
   createSaleService,
   addCharacterMarketplaceService,
   findByIdMarketplaceUserService,
   findAllMarketplaceService,
+  deleteCharacterMarketplaceService,
 };
