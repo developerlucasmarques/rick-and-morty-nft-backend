@@ -64,11 +64,13 @@ const findAllCartCharactersController = async (req, res) => {
   try {
     const cart = await findByIdCartUserService(req.userId);
     const characters = [];
+    let total = 0;
     for (let i of cart.characters) {
       const character = await findByIdCharacterService(i);
       characters.push(character);
+      total = total + character.price;
     }
-    return res.status(200).send({ results: characters });
+    return res.status(200).send({ results: characters, total: `Total da compra: ${total} coins` });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -125,7 +127,7 @@ const buyCharactersCartController = async (req, res) => {
     if (user.coins >= totalPrice) {
       for (let i of characters) {
         i.acquired = true;
-        await updateByIdAcquiredCharacterService(i._id);
+        await updateByIdAcquiredCharacterService(i._id, user._id);
       }
       const newCoinsUser = user.coins - totalPrice;
       await findByIdAndUpdateCoinsService(req.userId, newCoinsUser);
@@ -136,7 +138,6 @@ const buyCharactersCartController = async (req, res) => {
 
     for (let i of characters) {
       await addPropertiesUserService(req.userId, i);
-      await deleteByIdCharacterService(i._id);
     }
 
     await deleteCartService(cart._id);
