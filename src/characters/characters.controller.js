@@ -39,7 +39,8 @@ const findAllCharactersController = async (req, res) => {
         image: element.image,
         price: element.price,
         commission: element.commission,
-        acquired: element.acquired
+        acquired: element.acquired,
+        owner: element.user
       })),
     });
   } catch (err) {

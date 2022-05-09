@@ -9,7 +9,7 @@ const CharactersSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
     required: true,
-    select: false,
+    // select: false,
   },
   acquired: { type: Boolean, required: true },
 });
