@@ -42,7 +42,7 @@ characterRouter.get(
   verifyIdExistInDb,
   findByIdCharacterController
 );
-characterRouter.get('/search', filterByNameCharacterController);
+characterRouter.get('/search', authLoginMiddleware, filterByNameCharacterController);
 
 characterRouter.put(
   '/update/:id',
