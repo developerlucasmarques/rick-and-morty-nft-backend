@@ -22,7 +22,7 @@
     "/users/create-admin": {
       "post": {
         "summary": "Criar o Admin",
-        "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens e só pode existir um Admin",
+        "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens, só pode existir um Admin e Admin não tem autorização para fazer compras." ,
         "tags": ["Users"],
         "requestBody": {
           "content": {
@@ -317,7 +317,7 @@
           "401": {
             "description": "Sem permissão! || Token mal formatado! || Token inválido || O token não foi informado!"
           },
-          "200": {
+          "201": {
             "description": "NFT criada com sucesso!"
           }
         }
@@ -328,6 +328,7 @@
         "summary": "Lista de todas os personagens",
         "description": "Rota responsável por listar todos os personagens",
         "tags": ["Characters"],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "500": {
             "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
@@ -359,6 +360,7 @@
         "summary": "Busca um personagem pelo ID",
         "description": "Rota responsável por buscar um personagem pelo ID",
         "tags": ["Characters"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -402,6 +404,7 @@
         "summary": "Filtra os personagens pelo Nome",
         "description": "Rota responsável por filtrar os personagens pelo nome.",
         "tags": ["Characters"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "name",
