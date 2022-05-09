@@ -518,7 +518,7 @@
             "description": "Id não encontrado. || Não encontramos esse personagem em nossa lista. Talvez ele já tenha sido deletado."
           },
           "200": {
-            "description": "*Nome do personagem* deletado com sucesso!"
+            "description": "NFT deletada com sucesso!"
           }
         }
       }
@@ -549,7 +549,7 @@
             "description": "Id não encontrado."
           },
           "201": {
-            "description": "${character.name} foi adcionado(a) ao carrinho!",
+            "description": "NFT adcionada ao carrinho!",
             "content": {
               "application/json": {
                 "schema": {
@@ -655,6 +655,120 @@
           },
           "200": {
             "description": "Compra finalizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marketplace/create-sale-order/{id}": {
+      "post": {
+        "summary": "Coloca suas NFTs a venda para outros usuários",
+        "description": "Rota responsável por adicionar personagens à venda entre usuários.", 
+        "tags": ["Marketplace"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Id do Personagem para venda.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido. || Essa NFT não é sua propriedade || Digite um valor para venda || ${i.name} já está à venda."
+          },
+          "404": {
+            "description": "Não possui NFTs."
+          },
+          "201": {
+            "description": "NFT adcionada ao marketplace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marketplace/find": {
+      "get": {
+        "summary": "Busca todas as ofertas do Marketplace",
+        "description": "Rota responsável por mostrar todos as NFTs adquiridas a venda.", 
+        "tags": ["Marketplace"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido."
+          },
+          "404": {
+            "description": "Marketplace vazio"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marketplace//delete-character/{id}": {
+      "delete": {
+        "summary": "Remove uma oferta do marketplace",
+        "description": "Rota responsável por remover uma oferta do marketplace.", 
+        "tags": ["Marketplace"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Id do Personagem para venda.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido. || Você ainda não tem este item à venda."
+          },
+          "404": {
+            "description": "Nenhum produto adicionado ao Marketplace."
+          },
+          "200": {
+            "description": "NFT deletada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
