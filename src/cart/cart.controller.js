@@ -119,7 +119,7 @@ const buyCharactersCartController = async (req, res) => {
     if (user.coins < totalPrice) {
       return res
         .status(400)
-        .send({ message: 'Moedas insuficientes para fazer a compra' });
+        .send({ message: 'Moedas insuficientes para fazer a compra.' });
     }
 
     if (user.coins >= totalPrice) {
@@ -136,9 +136,9 @@ const buyCharactersCartController = async (req, res) => {
 
     for (let i of characters) {
       await addPropertiesUserService(req.userId, i);
-      await deleteByIdCharacterService(i._id)
+      await deleteByIdCharacterService(i._id);
     }
-    
+
     await deleteCartService(cart._id);
 
     res.status(200).send({ message: 'Compra finalizada com sucesso' });

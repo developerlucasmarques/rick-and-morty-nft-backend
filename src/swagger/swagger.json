@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/create-admin": {
+    "/users/create-admin": {
       "post": {
         "summary": "Criar o Admin",
         "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens e só pode existir um Admin",
@@ -111,7 +111,7 @@
         }
       }
     },
-    "/users": {
+    "/users/find-all": {
       "get": {
         "summary": "Buscar todos os usuários",
         "description": "Rota responsável por buscar todos os usuários. É necessário autenticação de Admin",
@@ -143,7 +143,7 @@
         }
       }
     },
-    "/users/{id}": {
+    "/users/find/{id}": {
       "get": {
         "summary": "Buscar um usuário por ID. É necessário autenticação de Admin",
         "description": "Rota responsável por buscar um único usuário por ID",
@@ -167,6 +167,67 @@
           },
           "404": {
             "description": "Não existem usuários com esse Id!"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/my-account": {
+      "get": {
+        "summary": "Página de perfil",
+        "description": "Rota responsável pela página de perfil",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "401": {
+            "description": "Token inválido || O token não foi informado! || Token mal formatado!"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/find-properties": {
+      "get": {
+        "summary": "Lista de NFTs do Usuário",
+        "description": "Rota responsável por listar todos as NFTs pertencentes ao Usuário",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "401": {
+            "description": "Token inválido || O token não foi informado! || Token mal formatado!"
+          },
+          "404": {
+            "description": "Nenhuma NFT encontrada"
           },
           "200": {
             "description": "OK",
@@ -262,7 +323,7 @@
         }
       }
     },
-    "/characters/": {
+    "/characters/find-all": {
       "get": {
         "summary": "Lista de todas os personagens",
         "description": "Rota responsável por listar todos os personagens",
@@ -458,6 +519,152 @@
           }
         }
       }
+    },
+    "/cart/create/{id}": {
+      "post": {
+        "summary": "Cria um carrinho de compras e adiciona novos personagens",
+        "description": "Rota responsável por adicionar personagens ao carrinho de compras e criar um carrinho novo caso seja a primeira adição do usuário.",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Id do Personagem para adição ao carrinho",
+            "required": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido. || ${character.name} não está disponível. || Você já adicionou essa NFT ao carrinho."
+          },
+          "404": {
+            "description": "Id não encontrado."
+          },
+          "201": {
+            "description": "${character.name} foi adcionado(a) ao carrinho!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/list": {
+      "get": {
+        "summary": "Exibe todos os personagens adicionados ao carrinho",
+        "description": "Rota responsável por exibir todos os personagens adicionados ao carrinho",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado!"
+          },
+          "404": {
+            "description": "Carrinho está vazio"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/delete/{id}": {
+      "put": {
+        "summary": "Deleta um personagem do carrinho",
+        "description": "Rota responsável por deletar personagens do carrinho de compras pelo ID.",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Id do Personagem para remoção ao carrinho",
+            "required": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido. || Este item não existe no carrinho."
+          },
+          "404": {
+            "description": "Id não encontrado. || O carrinho está vazio"
+          },
+          "200": {
+            "description": "NFT deletada do carrinho",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/buy": {
+      "put": {
+        "summary": "Efetua a compra das NFTs listadas no carrinho.",
+        "description": "Rota responsável por efetuar a compra das NFTs listadas no carrinho.",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido. || Token mal formatado! || Id inválido. || Este item não existe no carrinho. || Moedas insuficientes para fazer a compra."
+          },
+          "404": {
+            "description": "Carrinho está vazio."
+          },
+          "200": {
+            "description": "Compra finalizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -486,6 +693,15 @@
           },
           "photo": {
             "type": "string"
+          },
+          "coins": {
+            "type": "number"
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "properties": {
+            "type": "array"
           }
         }
       },
@@ -503,20 +719,38 @@
           },
           "commission": {
             "type": "number"
+          },
+          "user": {
+            "type": "ObjectId"
+          },
+          "acquired": {
+            "type": "boolean"
           }
         }
       },
-      "Cart":{
+      "Cart": {
         "type": "object",
         "properties": {
           "characters": {
             "type": "array"
           },
           "user": {
-            "type": "string"
+            "type": "ObjectId",
+            "ref": "users"
           },
           "finished": {
             "type": "boolean"
+          }
+        }
+      },
+      "Marketplace": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "ObjectId"
+          },
+          "characters": {
+            "type": "array"
           }
         }
       }

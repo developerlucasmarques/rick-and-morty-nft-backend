@@ -21,9 +21,9 @@ import {
   uppercaseFirstLetter,
 } from './characters.middlewares.js';
 
-export const router = express.Router();
+export const characterRouter = express.Router();
 
-router.post(
+characterRouter.post(
   '/create',
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
@@ -35,16 +35,24 @@ router.post(
   createCharacterController
 );
 
-router.get('/', authLoginMiddleware, findAllCharactersController);
-router.get(
+characterRouter.get(
+  '/find-all',
+  authLoginMiddleware,
+  findAllCharactersController
+);
+characterRouter.get(
   '/find/:id',
   authLoginMiddleware,
   verifyIdExistInDb,
   findByIdCharacterController
 );
-router.get('/search', filterByNameCharacterController);
+characterRouter.get(
+  '/search',
+  authLoginMiddleware,
+  filterByNameCharacterController
+);
 
-router.put(
+characterRouter.put(
   '/update/:id',
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
@@ -56,7 +64,7 @@ router.put(
   verifyCommissionAmount,
   updateByIdCharacterController
 );
-router.delete(
+characterRouter.delete(
   '/delete/:id',
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,

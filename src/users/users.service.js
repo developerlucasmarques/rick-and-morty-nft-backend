@@ -30,6 +30,22 @@ const addPropertiesUserService = (idUser, characters) =>
     }
   );
 
+// const updateByIdPriceCharacterUser = (idUser, idCharacter, newprice) => {
+//   User.findByIdAndUpdate(
+//     { _id: idUser, properties: { $elemMatch: { _id: idCharacter } } },
+//     {
+//       $set: {
+//         properties: {
+//           price: newprice,
+//         },
+//       },
+//     },
+//     {
+//       rawResult: true,
+//     }
+//   );
+// };
+
 export {
   findByEmailUserService,
   createUserService,
@@ -40,4 +56,5 @@ export {
   findByIdAndUpdateCoinsService,
   findByAdminAndUpdateCoinsService,
   addPropertiesUserService,
+  // updateByIdPriceCharacterUser,
 };
