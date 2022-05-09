@@ -27,8 +27,8 @@ const filterByNameCharacterService = async (name) =>
 const deleteByIdCharacterService = (idParams) =>
   Characters.findByIdAndDelete(idParams);
 
-const updateByIdAcquiredCharacterService = (idCharacter) =>
-  Characters.findOneAndUpdate({ _id: idCharacter }, { acquired: true });
+const updateByIdAcquiredCharacterService = (idCharacter, userId) =>
+  Characters.findOneAndUpdate({ _id: idCharacter }, { acquired: true, user: userId });
 
 export {
   findAllCharactersService,
