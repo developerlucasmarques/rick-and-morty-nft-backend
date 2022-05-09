@@ -3,4 +3,21 @@ import { Marketplace } from '../models/Marketplace.js';
 const createSaleService = (userId, character) =>
   Marketplace.create({ user: userId, characters: character });
 
-export { createSaleService };
+const addCharacterMarketplaceService = (userId, character) =>
+  Marketplace.findOneAndUpdate(
+    { user: userId },
+    {
+      $push: {
+        characters: character,
+      },
+    }
+  );
+
+const findByIdMarketplaceUserService = (userId) =>
+  Marketplace.findOne({ user: userId });
+
+export {
+  createSaleService,
+  addCharacterMarketplaceService,
+  findByIdMarketplaceUserService,
+};
