@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/create-admin": {
+    "/users/create-admin": {
       "post": {
         "summary": "Criar o Admin",
         "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens e só pode existir um Admin",
@@ -217,7 +217,7 @@
       "get": {
         "summary": "Lista de NFTs do Usuário",
         "description": "Rota responsável por listar todos as NFTs pertencentes ao Usuário",
-        "tags": ["Users", "Characters"],
+        "tags": ["Users"],
         "security": [{ "bearerAuth": [] }],
         "responses": {
           "500": {
