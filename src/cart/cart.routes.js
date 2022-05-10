@@ -7,7 +7,10 @@ import {
   deleteCharacterCartController,
   findAllCartCharactersController,
 } from './cart.controller.js';
-import { verifyAdminCartMiddleware, verifyEmptyCartMiddleware } from './cart.middleware.js';
+import {
+  verifyAdminCartMiddleware,
+  verifyEmptyCartMiddleware,
+} from './cart.middleware.js';
 
 export const cartRouter = express.Router();
 

@@ -23,8 +23,13 @@ import { findByIdMarketplaceService } from '../marketplace/marketplace.service.j
 const createAndAddCartController = async (req, res) => {
   try {
     const character = await findByIdCharacterService(req.params.id);
-    const market = await findByIdMarketplaceService(req.params.id);
-    if (character.acquired && !market) {
+    // const market = await findByIdMarketplaceService(req.params.id);
+    // if (character.acquired && !market) {
+    //   return res
+    //     .status(400)
+    //     .send({ message: `${character.name} não está disponível.` });
+    // }
+    if (character.acquired) {
       return res
         .status(400)
         .send({ message: `${character.name} não está disponível.` });
@@ -113,7 +118,7 @@ const buyCharactersCartController = async (req, res) => {
   try {
     const cart = await findByIdCartUserService(req.userId);
     const user = await findByIdUserService(req.userId);
-    
+
     const characters = [];
     for (let i of cart.characters) {
       const character = await findByIdCharacterService(i);

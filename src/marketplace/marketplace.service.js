@@ -18,7 +18,8 @@ const findByIdMarketplaceUserService = (userId) =>
 
 const findAllMarketplaceService = () => Marketplace.find();
 
-const findByIdMarketplaceService = (characterId) => Marketplace.findOne({characterId})
+const findByIdMarketplaceService = (characterId) =>
+  Marketplace.findOne({ characterId });
 
 const deleteCharacterMarketplaceService = (userId, characterId) =>
   Marketplace.findOneAndUpdate(
@@ -30,13 +31,11 @@ const deleteCharacterMarketplaceService = (userId, characterId) =>
     }
   );
 
-
-
 export {
   createSaleService,
   addCharacterMarketplaceService,
   findByIdMarketplaceUserService,
   findAllMarketplaceService,
   deleteCharacterMarketplaceService,
-  findByIdMarketplaceService
+  findByIdMarketplaceService,
 };

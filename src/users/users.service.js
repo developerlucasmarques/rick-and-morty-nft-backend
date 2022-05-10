@@ -9,7 +9,8 @@ const createUserService = (body) => User.create(body);
 
 const findAllUserService = () => User.find();
 
-const findByIdUserService = (idUser) => User.findById(idUser).select("+password");
+const findByIdUserService = (idUser) =>
+  User.findById(idUser).select('+password');
 
 const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 

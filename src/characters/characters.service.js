@@ -28,7 +28,10 @@ const deleteByIdCharacterService = (idParams) =>
   Characters.findByIdAndDelete(idParams);
 
 const updateByIdAcquiredCharacterService = (idCharacter, userId) =>
-  Characters.findOneAndUpdate({ _id: idCharacter }, { acquired: true, user: userId });
+  Characters.findOneAndUpdate(
+    { _id: idCharacter },
+    { acquired: true, user: userId }
+  );
 
 export {
   findAllCharactersService,

@@ -22,7 +22,7 @@
     "/users/create-admin": {
       "post": {
         "summary": "Criar o Admin",
-        "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens, só pode existir um Admin e Admin não tem autorização para fazer compras." ,
+        "description": "Cria o Admin. Apenas o Admin pode criar, editar e deletar novos personagens, só pode existir um Admin e Admin não tem autorização para fazer compras.",
         "tags": ["Users"],
         "requestBody": {
           "content": {
@@ -672,7 +672,7 @@
     "/marketplace/create-sale-order/{id}": {
       "post": {
         "summary": "Coloca suas NFTs a venda para outros usuários",
-        "description": "Rota responsável por adicionar personagens à venda entre usuários.", 
+        "description": "Rota responsável por adicionar personagens à venda entre usuários.",
         "tags": ["Marketplace"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
@@ -713,7 +713,7 @@
     "/marketplace/find": {
       "get": {
         "summary": "Busca todas as ofertas do Marketplace",
-        "description": "Rota responsável por mostrar todos as NFTs adquiridas a venda.", 
+        "description": "Rota responsável por mostrar todos as NFTs adquiridas a venda.",
         "tags": ["Marketplace"],
         "security": [{ "bearerAuth": [] }],
         "responses": {
@@ -721,7 +721,7 @@
             "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
           },
           "400": {
-            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido."
+            "description": "O token não foi informado! || Token inválido || Token mal formatado!"
           },
           "404": {
             "description": "Marketplace vazio"
@@ -742,10 +742,42 @@
         }
       }
     },
-    "/marketplace//delete-character/{id}": {
+    "/marketplace/find/{id}": {
+      "get": {
+        "summary": "Busca NFT no Marketplace por ID",
+        "description": "Rota responsável por buscar NFT no Marketplace por ID",
+        "tags": ["Marketplace"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "500": {
+            "description": "Ops, tivemos um pequeno problema. Tente novamente mais tarde."
+          },
+          "400": {
+            "description": "O token não foi informado! || Token inválido || Token mal formatado! || Id inválido."
+          },
+          "404": {
+            "description": "Id não encontrado."
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marketplace/delete-character/{id}": {
       "delete": {
         "summary": "Remove uma oferta do marketplace",
-        "description": "Rota responsável por remover uma oferta do marketplace.", 
+        "description": "Rota responsável por remover uma oferta do marketplace.",
         "tags": ["Marketplace"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
