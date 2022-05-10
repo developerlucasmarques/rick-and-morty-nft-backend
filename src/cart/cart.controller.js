@@ -12,54 +12,65 @@ import {
 } from '../users/users.service.js';
 import {
   createCartService,
-  findByIdCartUserService,
+  findOneCartUserService,
   addCharacterCartService,
   deleteCharacterCartService,
   deleteCartService,
 } from './cart.service.js';
-//beta
-import { findByIdMarketplaceService } from '../marketplace/marketplace.service.js';
+
+import {
+  createSaleService,
+  findAllMarketplaceService,
+  findByIdMarketplaceService,
+} from '../marketplace/marketplace.service.js';
 
 const createAndAddCartController = async (req, res) => {
   try {
     const character = await findByIdCharacterService(req.params.id);
-    // const market = await findByIdMarketplaceService(req.params.id);
-    // if (character.acquired && !market) {
-    //   return res
-    //     .status(400)
-    //     .send({ message: `${character.name} não está disponível.` });
-    // }
-    if (character.acquired) {
-      return res
-        .status(400)
-        .send({ message: `${character.name} não está disponível.` });
-    }
-    const cartUser = await findByIdCartUserService(req.userId);
+    const allMarketplace = await findAllMarketplaceService();
+    let checkCharacterAcquired = true;
+    let checkCharacterMarketplace = false;
 
-    if (cartUser) {
-      for (let i of cartUser.characters) {
-        if (req.params.id == i) {
-          return res
-            .status(400)
-            .send({ message: 'Você já adicionou essa NFT ao carrinho.' });
+    if (!character.acquired) {
+      checkCharacterAcquired = false;
+    }
+    for (let userSaleItems of allMarketplace) {
+      for (let i of userSaleItems.characters) {
+        if (i._id.equals(req.params.id)) {
+          checkCharacterMarketplace = true;
         }
       }
-      await addCharacterCartService(cartUser._id, req.params.id);
-      return res
-        .status(201)
-        .send({ message: `${character.name} foi adcionado(a) ao carrinho!` });
     }
 
-    const cart = await createCartService(
-      req.userId,
-      (req.body.finished = false)
-    );
-    cart.characters.push(req.params.id);
-    await cart.save();
+    if (checkCharacterAcquired && !checkCharacterMarketplace) {
+      return res.status(400).send({ message: 'Essa NFT não está disponível.' });
+    }
 
-    return res.status(201).send({
-      message: `Carrinho criado e ${character.name} adcionado(a)!`,
-    });
+    const cartUser = await findOneCartUserService(req.userId);
+    if (!checkCharacterAcquired && !checkCharacterMarketplace) {
+      if (cartUser) {
+        for (let i of cartUser.characters) {
+          if (i._id.equals(req.params.id)) {
+            return res
+              .status(400)
+              .send({ message: 'Essa NFT já foi adcionada ao carrinho.' });
+          }
+        }
+        await addCharacterCartService(cartUser._id, character);
+        return res
+          .status(201)
+          .send({ message: `${character.name} adicionado ao carrinho!` });
+      }
+      await createCartService(req.userId, character);
+      return res
+        .status(201)
+        .send({ message: `Carrinho criado e ${character.name} adicionado!` });
+    }
+
+    if (checkCharacterAcquired && checkCharacterMarketplace) {
+      res.status(201).send('ADICIONAR AO CARRINHO ITEM DO MARKETPLACE');
+    }
+    
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -70,7 +81,7 @@ const createAndAddCartController = async (req, res) => {
 
 const findAllCartCharactersController = async (req, res) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
+    const cart = await findOneCartUserService(req.userId);
     const characters = [];
     let total = 0;
     for (let i of cart.characters) {
@@ -91,7 +102,7 @@ const findAllCartCharactersController = async (req, res) => {
 
 const deleteCharacterCartController = async (req, res) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
+    const cart = await findOneCartUserService(req.userId);
     let check = false;
     for (let i of cart.characters) {
       if (i == req.params.id) {
@@ -116,7 +127,7 @@ const deleteCharacterCartController = async (req, res) => {
 
 const buyCharactersCartController = async (req, res) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
+    const cart = await findOneCartUserService(req.userId);
     const user = await findByIdUserService(req.userId);
 
     const characters = [];
@@ -168,3 +179,10 @@ export {
   deleteCharacterCartController,
   buyCharactersCartController,
 };
+
+// const market = await findByIdMarketplaceService(req.params.id);
+// if (character.acquired && !market) {
+//   return res
+//     .status(400)
+//     .send({ message: `${character.name} não está disponível.` });
+// }
