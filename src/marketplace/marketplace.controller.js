@@ -1,4 +1,4 @@
-import { findByIdUserService } from '../users/users.service.js';
+import { findByIdUserMorePasswordService } from '../users/users.service.js';
 import {
   addCharacterMarketplaceService,
   createSaleService,
@@ -10,7 +10,7 @@ import {
 
 const createSaleMarketplaceController = async (req, res) => {
   try {
-    const user = await findByIdUserService(req.userId);
+    const user = await findByIdUserMorePasswordService(req.userId);
     if (!user || user.properties.length == 0) {
       return res.satus(404).send({ message: 'Não possui NFTs' });
     }
@@ -50,11 +50,13 @@ const createSaleMarketplaceController = async (req, res) => {
       }
     }
 
-    user.properties[1].price = req.body.price;
-    console.log(user.properties[1].price);
-    user.markModified('properties');
-    const usuario = await user.save();
-    console.log(usuario);
+    for (let i = 0; i < user.properties.length; i++) {
+      if(user.properties[i]._id.equals(req.params.id)){
+        user.properties[i].price = req.body.price;
+        user.markModified('properties');
+        await user.save();
+      }
+    }
 
     for (let i of user.properties) {
       if (i._id.equals(req.params.id)) {
