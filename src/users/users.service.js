@@ -12,6 +12,9 @@ const findAllUserService = () => User.find();
 const findByIdUserService = (idUser) =>
   User.findById(idUser).select('+password');
 
+const findByIdUserMorePasswordService = (idUser) =>
+  User.findById(idUser).select('+password');
+
 const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 
 const findByIdAndUpdateCoinsService = (idUser, newCoins) =>
@@ -41,4 +44,5 @@ export {
   findByIdAndUpdateCoinsService,
   findByAdminAndUpdateCoinsService,
   addPropertiesUserService,
+  findByIdUserMorePasswordService,
 };
