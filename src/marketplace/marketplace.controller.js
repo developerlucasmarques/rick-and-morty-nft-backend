@@ -1,6 +1,5 @@
 import {
   findByIdUserService,
-  // updateByIdPriceCharacterUser,
 } from '../users/users.service.js';
 import {
   addCharacterMarketplaceService,
@@ -52,20 +51,11 @@ const createSaleController = async (req, res) => {
       }
     }
 
-    // for (let i = 0; i < user.properties.length; i++) {
-    //   if (user.properties[i]._id.equals(req.params.id)) {
-    //      user.properties[i].price = req.body.price
-    //      user.properties[i].price.save()
-    //   }
-    // }
-    // console.log(user);
-
-    // const update = await updateByIdPriceCharacterUser(
-    //   req.userId,
-    //   req.params.id,
-    //   req.body.price
-    // );
-    // console.log(update);
+    user.properties[1].price = req.body.price;
+    console.log(user.properties[1].price);
+    user.markModified('properties');
+    const usuario = await user.save();
+    console.log(usuario);
 
     for (let i of user.properties) {
       if (i._id.equals(req.params.id)) {
@@ -125,11 +115,9 @@ const deleteCharacterMarketplaceController = async (req, res) => {
           req.userId,
           userMarketplace.characters[i]
         );
-        return res
-          .status(200)
-          .send({
-            message: `${userMarketplace.characters[i].name} deletada do Marketplace.`,
-          });
+        return res.status(200).send({
+          message: `${userMarketplace.characters[i].name} deletada do Marketplace.`,
+        });
       }
     }
   } catch (err) {
