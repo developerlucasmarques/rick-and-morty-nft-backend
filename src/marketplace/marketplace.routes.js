@@ -20,4 +20,5 @@ marketplaceRouter.get(
   findAllMarketplaceController
 );
 
-marketplaceRouter.put('/delete-character/:id', authLoginMiddleware, deleteCharacterMarketplaceController)
+marketplaceRouter.put('/delete-character/:id', authLoginMiddleware, deleteCharacterMarketplaceController);
+
