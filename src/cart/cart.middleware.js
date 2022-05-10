@@ -1,9 +1,9 @@
-import { findByIdCartUserService } from './cart.service.js';
+import { findOneCartUserService } from './cart.service.js';
 import { findByIdUserService } from '../users/users.service.js';
 
 const verifyEmptyCartMiddleware = async (req, res, next) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
+    const cart = await findOneCartUserService(req.userId);
     if (!cart || cart.characters.length == 0) {
       return res.status(404).send({ message: 'Carrinho está vazio' });
     }
