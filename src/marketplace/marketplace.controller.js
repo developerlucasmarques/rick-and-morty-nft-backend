@@ -8,6 +8,7 @@ import {
   deleteCharacterMarketplaceService,
   findAllMarketplaceService,
   findByIdMarketplaceUserService,
+  findByIdMarketplaceService
 } from './marketplace.service.js';
 
 const createSaleMarketplaceController = async (req, res) => {
@@ -99,6 +100,17 @@ const findAllMarketplaceController = async (req, res) => {
   }
 };
 
+const findByIdMarketplaceController = async (req, res) => {
+  try {
+    return res.status(200).send(await findByIdMarketplaceService(req.params.id));
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message);
+  }
+}
+
 const deleteCharacterMarketplaceController = async (req, res) => {
   try {
     const userMarketplace = await findByIdMarketplaceUserService(req.userId);
@@ -144,4 +156,5 @@ export {
   createSaleMarketplaceController,
   findAllMarketplaceController,
   deleteCharacterMarketplaceController,
+  findByIdMarketplaceController,
 };

@@ -18,10 +18,13 @@ import {
   deleteCartService,
 } from './cart.service.js';
 
+import { findByIdMarketplaceService } from '../marketplace/marketplace.service.js';
+
 const createAndAddCartController = async (req, res) => {
   try {
     const character = await findByIdCharacterService(req.params.id);
-    if (character.acquired) {
+    const market = await findByIdMarketplaceService(req.params.id);
+    if (character.acquired && !market) {
       return res
         .status(400)
         .send({ message: `${character.name} não está disponível.` });
@@ -70,7 +73,9 @@ const findAllCartCharactersController = async (req, res) => {
       characters.push(character);
       total = total + character.price;
     }
-    return res.status(200).send({ results: characters, total: `Total da compra: ${total} coins` });
+    return res
+      .status(200)
+      .send({ results: characters, total: `Total da compra: ${total} coins` });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -108,6 +113,7 @@ const buyCharactersCartController = async (req, res) => {
   try {
     const cart = await findByIdCartUserService(req.userId);
     const user = await findByIdUserService(req.userId);
+    
     const characters = [];
     for (let i of cart.characters) {
       const character = await findByIdCharacterService(i);
