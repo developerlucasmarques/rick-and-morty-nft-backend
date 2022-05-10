@@ -9,8 +9,8 @@ import {
   createUserController,
   findAllUserController,
   findBydIdUserController,
-  findPropertiesController,
-  myAccountController,
+  findPropertiesUserController,
+  myAccountUserController,
 } from './users.controller.js';
 
 import {
@@ -47,9 +47,9 @@ userRouter.get(
   findBydIdUserController
 );
 
-userRouter.get('/my-account', authLoginMiddleware, myAccountController);
+userRouter.get('/my-account', authLoginMiddleware, myAccountUserController);
 userRouter.get(
   '/find-properties',
   authLoginMiddleware,
-  findPropertiesController
+  findPropertiesUserController
 );

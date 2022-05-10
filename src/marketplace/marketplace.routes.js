@@ -1,7 +1,7 @@
 import express from 'express';
 import { authLoginMiddleware } from '../auth/auth.middleware.js';
 import {
-  createSaleController,
+  createSaleMarketplaceController,
   deleteCharacterMarketplaceController,
   findAllMarketplaceController,
 } from './marketplace.controller.js';
@@ -11,7 +11,7 @@ export const marketplaceRouter = express.Router();
 marketplaceRouter.post(
   '/create-sale-order/:id',
   authLoginMiddleware,
-  createSaleController
+  createSaleMarketplaceController
 );
 
 marketplaceRouter.get(

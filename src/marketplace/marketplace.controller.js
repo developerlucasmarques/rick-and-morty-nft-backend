@@ -9,7 +9,7 @@ import {
   findByIdMarketplaceUserService,
 } from './marketplace.service.js';
 
-const createSaleController = async (req, res) => {
+const createSaleMarketplaceController = async (req, res) => {
   try {
     const user = await findByIdUserService(req.userId);
     if (!user || user.properties.length == 0) {
@@ -94,7 +94,7 @@ const deleteCharacterMarketplaceController = async (req, res) => {
     const userMarketplace = await findByIdMarketplaceUserService(req.userId);
     if (!userMarketplace) {
       return res
-        .status(400)
+        .status(404)
         .send({ message: 'Nenhum produto adicionado ao Marketplace.' });
     }
     let check = false;
@@ -129,7 +129,7 @@ const deleteCharacterMarketplaceController = async (req, res) => {
 };
 
 export {
-  createSaleController,
+  createSaleMarketplaceController,
   findAllMarketplaceController,
   deleteCharacterMarketplaceController,
 };

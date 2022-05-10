@@ -111,7 +111,7 @@ const findBydIdUserController = async (req, res) => {
   }
 };
 
-const myAccountController = async (req, res) => {
+const myAccountUserController = async (req, res) => {
   try {
     const user = await findByIdUserService(req.userId);
     return res.status(200).send(user);
@@ -123,10 +123,10 @@ const myAccountController = async (req, res) => {
   }
 };
 
-const findPropertiesController = async (req, res) => {
+const findPropertiesUserController = async (req, res) => {
   try {
     const user = await findByIdUserService(req.userId);
-    if (!user.properties || user.properties.lenght == 0) {
+    if (!user.properties || user.properties.length == 0) {
       return res.status(404).send({ message: 'Nenhuma NFT encontrada' });
     }
     return res.status(200).send({ properties: user.properties });
@@ -143,6 +143,6 @@ export {
   findAllUserController,
   findBydIdUserController,
   createUserAdminController,
-  myAccountController,
-  findPropertiesController,
+  myAccountUserController,
+  findPropertiesUserController,
 };
