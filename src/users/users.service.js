@@ -9,7 +9,7 @@ const createUserService = (body) => User.create(body);
 
 const findAllUserService = () => User.find();
 
-const findByIdUserService = (idUser) => User.findById(idUser);
+const findByIdUserService = (idUser) => User.findById(idUser).select("+password");
 
 const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 
@@ -20,8 +20,8 @@ const findByAdminAndUpdateCoinsService = async (newCoins) => {
   await User.findOneAndUpdate({ admin: true }, { coins: newCoins });
 };
 
-const addPropertiesUserService = (idUser, characters) =>
-  User.findOneAndUpdate(
+const addPropertiesUserService = async (idUser, characters) =>
+  await User.findOneAndUpdate(
     { _id: idUser },
     {
       $push: {
@@ -29,22 +29,6 @@ const addPropertiesUserService = (idUser, characters) =>
       },
     }
   );
-
-// const updateByIdPriceCharacterUser = (idUser, idCharacter, newprice) => {
-//   User.findByIdAndUpdate(
-//     { _id: idUser, properties: { $elemMatch: { _id: idCharacter } } },
-//     {
-//       $set: {
-//         properties: {
-//           price: newprice,
-//         },
-//       },
-//     },
-//     {
-//       rawResult: true,
-//     }
-//   );
-// };
 
 export {
   findByEmailUserService,
@@ -56,5 +40,4 @@ export {
   findByIdAndUpdateCoinsService,
   findByAdminAndUpdateCoinsService,
   addPropertiesUserService,
-  // updateByIdPriceCharacterUser,
 };
