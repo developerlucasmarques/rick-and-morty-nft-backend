@@ -21,7 +21,6 @@ import {
 import {
   createSaleService,
   findAllMarketplaceService,
-  findByIdMarketplaceService,
 } from '../marketplace/marketplace.service.js';
 
 const createAndAddCartController = async (req, res) => {
@@ -30,6 +29,7 @@ const createAndAddCartController = async (req, res) => {
     const allMarketplace = await findAllMarketplaceService();
     let checkCharacterAcquired = true;
     let checkCharacterMarketplace = false;
+    let characterMarketplace;
 
     if (!character.acquired) {
       checkCharacterAcquired = false;
@@ -38,6 +38,7 @@ const createAndAddCartController = async (req, res) => {
       for (let i of userSaleItems.characters) {
         if (i._id.equals(req.params.id)) {
           checkCharacterMarketplace = true;
+          characterMarketplace = i;
         }
       }
     }
@@ -68,9 +69,24 @@ const createAndAddCartController = async (req, res) => {
     }
 
     if (checkCharacterAcquired && checkCharacterMarketplace) {
-      res.status(201).send('ADICIONAR AO CARRINHO ITEM DO MARKETPLACE');
+      if (cartUser) {
+        for (let i of cartUser.characters) {
+          if (i._id.equals(req.params.id)) {
+            return res
+              .status(400)
+              .send({ message: 'Essa NFT já foi adcionada ao carrinho.' });
+          }
+        }
+        await addCharacterCartService(cartUser._id, characterMarketplace);
+        return res.status(201).send({
+          message: `${characterMarketplace.name} adicionado ao carrinho do Mk!`,
+        });
+      }
+      await createCartService(req.userId, characterMarketplace);
+      return res.status(201).send({
+        message: `Carrinho do Mk criado e ${characterMarketplace.name} adicionado!`,
+      });
     }
-    
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -159,6 +175,7 @@ const buyCharactersCartController = async (req, res) => {
     }
 
     for (let i of characters) {
+      i.user = req.userId;
       await addPropertiesUserService(req.userId, i);
     }
 
