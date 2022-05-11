@@ -13,18 +13,9 @@ const findByIdUserService = (idUser) =>
   User.findById(idUser).select('+password');
 
 const updateByIdUserService = async (idUser, body) => {
-  try {
-    const user = await Characters.findByIdAndUpdate(idUser, body).select(
-      '+password'
-    );
-    const newUser = body;
-    return [user, newUser];
-  } catch (err) {
-    res.status(500).send({
-      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
-    });
-    console.log(err.message, " - updateByIdUserService");
-  }
+  const user = await User.findByIdAndUpdate(idUser, body).select('+password');
+  const newUser = body;
+  return user, body;
 };
 
 const findByIdUserMorePasswordService = (idUser) =>
