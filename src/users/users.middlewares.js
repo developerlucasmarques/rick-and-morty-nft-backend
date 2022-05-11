@@ -23,7 +23,7 @@ const checkAllFields = (req, res, next) => {
   }
 };
 
-const verifyExistingUserByEmail = async (req, res, next) => {
+const verifyExistingUser = async (req, res, next) => {
   try {
     const foundUserEmail = await findByEmailUserService(req.body.email);
     const foundUsername = await findByUsernameUserService(req.body.username);
@@ -47,7 +47,6 @@ const verifyExistingUserById = async (req, res, next) => {
       return res.status(400).send({ message: 'Id inválido!' });
     }
     const findId = await findByIdUserService(req.params.id);
-    // console.log(findId.username)
     if (!findId) {
       return res.status(404).send({
         message: 'Não existem usuários com esse Id!',
@@ -62,4 +61,4 @@ const verifyExistingUserById = async (req, res, next) => {
   }
 };
 
-export { checkAllFields, verifyExistingUserByEmail, verifyExistingUserById };
+export { checkAllFields, verifyExistingUser, verifyExistingUserById };

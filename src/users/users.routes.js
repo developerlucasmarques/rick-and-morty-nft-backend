@@ -11,25 +11,26 @@ import {
   findBydIdUserController,
   findPropertiesUserController,
   myAccountUserController,
+  updateMyAccountUserController,
 } from './users.controller.js';
 
 import {
   checkAllFields,
-  verifyExistingUserByEmail,
+  verifyExistingUser,
   verifyExistingUserById,
 } from './users.middlewares.js';
 
 userRouter.post(
   '/create',
   checkAllFields,
-  verifyExistingUserByEmail,
+  verifyExistingUser,
   createUserController
 );
 
 userRouter.post(
   '/create-admin',
   checkAllFields,
-  verifyExistingUserByEmail,
+  verifyExistingUser,
   createUserAdminController
 );
 
@@ -48,8 +49,15 @@ userRouter.get(
 );
 
 userRouter.get('/my-account', authLoginMiddleware, myAccountUserController);
+userRouter.put( 
+  '/my-account', //swagger
+  authLoginMiddleware,
+  checkAllFields,
+  verifyExistingUser,
+  updateMyAccountUserController
+);
 userRouter.get(
-  '/find-properties',
+  '/my-account/properties', //swagger
   authLoginMiddleware,
   findPropertiesUserController
 );
