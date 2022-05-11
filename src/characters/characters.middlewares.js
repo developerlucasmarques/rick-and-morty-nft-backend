@@ -26,35 +26,49 @@ const findAllCharactersApi = async () => {
       }
     }
   } catch (err) {
-    console.log(err.message);
+    console.log(err.message, ' - findAllCharactersApi');
   }
 };
 
 findAllCharactersApi();
 
 const verifyObjectBody = (req, res, next) => {
-  if (!req.body.name || !req.body.price || !req.body.commission) {
-    return res.status(400).send({
-      message: 'Existem campos vazios.',
+  try {
+    if (!req.body.name || !req.body.price || !req.body.commission) {
+      return res.status(400).send({
+        message: 'Existem campos vazios.',
+      });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
+    console.log(err.message, " - verifyObjectBody");
   }
-  next();
 };
 
 const verifyCharacterTrue = (req, res, next) => {
-  req.body.name = req.body.name.trim();
-  let boolean = false;
-  for (let i of allCharacters) {
-    if (req.body.name.toLowerCase() == i.name.toLowerCase()) {
-      req.body.image = i.image;
-      boolean = true;
-      break;
+  try {
+    req.body.name = req.body.name.trim();
+    let boolean = false;
+    for (let i of allCharacters) {
+      if (req.body.name.toLowerCase() == i.name.toLowerCase()) {
+        req.body.image = i.image;
+        boolean = true;
+        break;
+      }
     }
+    if (!boolean) {
+      return res.status(400).send({ message: 'Insira um personagem real.' });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message, " - verifyCharacterTrue");
   }
-  if (!boolean) {
-    return res.status(400).send({ message: 'Insira um personagem real.' });
-  }
-  next();
 };
 
 const verifyCharacterExistInDb = async (req, res, next) => {
@@ -70,7 +84,7 @@ const verifyCharacterExistInDb = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyCharacterExistInDb");
   }
 };
 
@@ -96,7 +110,7 @@ const verifyCharacterUpdateName = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyCharacterUpdateName");
   }
 };
 
@@ -114,33 +128,47 @@ const verifyIdExistInDb = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyIdExistInDb");
   }
 };
 
 const verifyCommissionAmount = (req, res, next) => {
-  if (req.body.commission > 80 || req.body.commission < 0) {
-    return res
-      .status(400)
-      .send({ message: 'Defina uma comissão entre 1% e 80%.' });
+  try {
+    if (req.body.commission > 80 || req.body.commission < 0) {
+      return res
+        .status(400)
+        .send({ message: 'Defina uma comissão entre 1% e 80%.' });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message, " - verifyCommissionAmount");
   }
-  next();
 };
 
 const uppercaseFirstLetter = (req, res, next) => {
-  const reqName = req.body.name.split(' ');
-  const nameUpdatedArray = [];
-  for (let i = 0; i < reqName.length; i++) {
-    let name = reqName[i];
-    const nameUpdated = name[0].toUpperCase() + name.slice(1).toLowerCase();
-    nameUpdatedArray.push(nameUpdated);
+  try {
+    const reqName = req.body.name.split(' ');
+    const nameUpdatedArray = [];
+    for (let i = 0; i < reqName.length; i++) {
+      let name = reqName[i];
+      const nameUpdated = name[0].toUpperCase() + name.slice(1).toLowerCase();
+      nameUpdatedArray.push(nameUpdated);
+    }
+    let nameOk = '';
+    for (let i = 0; i < nameUpdatedArray.length; i++) {
+      nameOk = nameOk + nameUpdatedArray[i] + ' ';
+    }
+    req.body.name = nameOk.trim();
+    next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message, " - uppercaseFirstLetter");
   }
-  let nameOk = '';
-  for (let i = 0; i < nameUpdatedArray.length; i++) {
-    nameOk = nameOk + nameUpdatedArray[i] + ' ';
-  }
-  req.body.name = nameOk.trim();
-  next();
 };
 
 export {

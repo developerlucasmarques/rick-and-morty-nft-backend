@@ -41,7 +41,7 @@ const createUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createUserController");
   }
 };
 
@@ -80,7 +80,7 @@ const createUserAdminController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createUserAdminController");
   }
 };
 
@@ -97,7 +97,7 @@ const findAllUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findAllUserController");
   }
 };
 
@@ -108,7 +108,7 @@ const findBydIdUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findBydIdUserController");
   }
 };
 
@@ -120,7 +120,7 @@ const myAccountUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - myAccountUserController");
   }
 };
 const updateMyAccountUserController = async (req, res) => {
@@ -130,7 +130,7 @@ const updateMyAccountUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - updateMyAccountUserController");
   }
 };
 
@@ -145,7 +145,7 @@ const findPropertiesUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findPropertiesUserController");
   }
 };
 

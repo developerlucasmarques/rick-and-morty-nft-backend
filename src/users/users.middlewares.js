@@ -19,7 +19,7 @@ const checkAllFields = (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - checkAllFields");
   }
 };
 
@@ -37,7 +37,7 @@ const verifyExistingUser = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyExistingUser");
   }
 };
 
@@ -57,7 +57,7 @@ const verifyExistingUserById = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyExistingUserById");
   }
 };
 

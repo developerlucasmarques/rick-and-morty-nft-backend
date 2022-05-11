@@ -12,7 +12,7 @@ const verifyEmptyCartMiddleware = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyEmptyCartMiddleware");
   }
 };
 
@@ -29,7 +29,7 @@ const verifyAdminCartMiddleware = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - verifyAdminCartMiddleware");
   }
 };
 

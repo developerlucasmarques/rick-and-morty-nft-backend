@@ -64,7 +64,7 @@ const createAndAddCartController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createAndAddCartController");
   }
 };
 
@@ -85,7 +85,7 @@ const findAllCartCharactersController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findAllCartCharactersController");
   }
 };
 
@@ -110,7 +110,7 @@ const deleteCharacterCartController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - deleteCharacterCartController");
   }
 };
 
@@ -158,7 +158,7 @@ const buyCharactersCartController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - buyCharactersCartController");
   }
 };
 
