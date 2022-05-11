@@ -10,6 +10,7 @@ import {
 import {
   verifyAdminCartMiddleware,
   verifyEmptyCartMiddleware,
+  verifyIdExistDbAndMarketplace,
 } from './cart.middleware.js';
 
 export const cartRouter = express.Router();
@@ -18,7 +19,7 @@ cartRouter.post(
   '/create/:id',
   authLoginMiddleware,
   verifyAdminCartMiddleware,
-  verifyIdExistInDb,
+  verifyIdExistDbAndMarketplace,
   createAndAddCartController
 );
 
