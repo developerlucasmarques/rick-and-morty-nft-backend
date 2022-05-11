@@ -1,11 +1,24 @@
 # API Ricky and Morty <img src="https://user-images.githubusercontent.com/95504029/151560441-2e792d97-fd65-462c-8fd7-70f581de5674.gif" width="100">
-### Projeto 03 do Módulo 3 (Backend) - Blue EdTech 
+### Projeto 03/04 do Módulo 3 (Backend) - Blue EdTech 
 
 ## 🎆 Funcinalidades
 
-O objetivo desse projeto foi criar uma API restfull com validação de Login usando JWT e CRUD completo dos personagens da série.<br><br>
+Simula uma plataforma de compra e venda de NFTs usando como exemplo cards de personagens da série Rick and Morty.<br><br> 
 
-Para criar um novo personagem, use o nome de algum personagem real da série, como um dos exemplos no arquivo: <b>list-of-characters-examples.json</b>
+Será necessário cadastrar um admin e pelo menos um usuário (Caso já exista um admim cadastrado, experimente logar com Email:admin@admin.com e senha: admins).<br><br> 
+
+Para criar um novo personagem, use o nome de algum personagem real da série, como um dos exemplos no arquivo: <b>list-of-characters-examples.json</b> ou acesse [este site](https://rickandmortyapi.com), onde é possível encontrar informações sobre todos os personagens.<br><br>
+
+Nela é possivel: 
+- Adicionar novos personagens pelo nome (Admin);
+- Deletar Personagens (Admin); 
+- Alterar Valor e taxa de comissão (Admin); 
+- Adicionar NFTs da plataforma e do Marketplace em carrinho próprio (User); 
+- Finalizar compras (User); 
+- Expor suas NFTs à venda no Marketplace, definindo novo valor (user); 
+.<br><br>
+
+
 
 Para mais detalhes, acesse nossa documentação no [Swagger](https://api-rickyandmorty-nfts.onrender.com/api-docs).<br>
 
