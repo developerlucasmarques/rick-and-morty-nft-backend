@@ -42,10 +42,10 @@ const findAllCharactersController = async (req, res) => {
       owner: element.user,
     }));
 
-    const character = allCharacter.filter(
+    const charactersFilter = allCharacter.filter(
       (element) => element.acquired !== true
     );
-    return res.status(200).send({ results: character });
+    return res.status(200).send({ results: charactersFilter });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
