@@ -16,6 +16,7 @@ import {
   addCharacterCartService,
   deleteCharacterCartService,
   deleteCartService,
+  findAllCharactersCartUserService,
 } from './cart.service.js';
 
 const createAndAddCartController = async (req, res) => {
@@ -38,7 +39,7 @@ const createAndAddCartController = async (req, res) => {
     const cart = await findOneCartUserService(req.userId);
     if (cart) {
       for (let i of cart.characters) {
-        if (i.equals(req.params.id)) {
+        if (i == req.params.id) {
           return res.status(400).send({
             message: `${characterPlatform.name} já foi adcionada ao carrinho.`,
           });
@@ -64,17 +65,15 @@ const createAndAddCartController = async (req, res) => {
 
 const findAllCartCharactersController = async (req, res) => {
   try {
-    const cart = await findOneCartUserService(req.userId);
-    const characters = [];
+    const cart = await findAllCharactersCartUserService(req.userId);
     let total = 0;
     for (let i of cart.characters) {
-      const character = await findByIdCharacterService(i);
-      characters.push(character);
-      total = total + character.price;
+      total = total + i.price;
     }
-    return res
-      .status(200)
-      .send({ results: characters, total: `Total da compra: ${total} coins` });
+    return res.status(200).send({
+      results: cart.characters,
+      total: `Total da compra: ${total} coins`,
+    });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -86,16 +85,12 @@ const findAllCartCharactersController = async (req, res) => {
 const deleteCharacterCartController = async (req, res) => {
   try {
     const cart = await findOneCartUserService(req.userId);
-    let check = false;
     for (let i of cart.characters) {
-      if (i == req.params.id) {
-        check = true;
+      if (i != req.params.id) {
+        return res
+          .status(400)
+          .send({ message: 'Este item não existe no carrinho' });
       }
-    }
-    if (!check) {
-      return res
-        .status(400)
-        .send({ message: 'Este item não existe no carrinho' });
     }
 
     await deleteCharacterCartService(cart._id, req.params.id);
