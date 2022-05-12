@@ -3,7 +3,7 @@ import {
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
 } from '../auth/auth.middleware.js';
-export const userRouter = express.Router();
+
 import {
   createUserAdminController,
   createUserController,
@@ -18,8 +18,10 @@ import {
   checkAllFields,
   verifyExistingUser,
   verifyExistingUserById,
+  verifyUserUpdate,
+  // bcryptPassword
 } from './users.middlewares.js';
-
+export const userRouter = express.Router();
 userRouter.post(
   '/create',
   checkAllFields,
@@ -53,7 +55,8 @@ userRouter.put(
   '/my-account', //swagger
   authLoginMiddleware,
   checkAllFields,
-  verifyExistingUser,
+  verifyUserUpdate,
+  // bcryptPassword,
   updateMyAccountUserController
 );
 userRouter.get(

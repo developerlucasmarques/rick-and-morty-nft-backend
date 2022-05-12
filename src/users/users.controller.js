@@ -123,6 +123,7 @@ const myAccountUserController = async (req, res) => {
     console.log(err.message, " - myAccountUserController");
   }
 };
+
 const updateMyAccountUserController = async (req, res) => {
   try {
     return res.status(200).send(await updateByIdUserService(req.userId, req.body));

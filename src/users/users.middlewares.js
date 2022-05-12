@@ -19,7 +19,7 @@ const checkAllFields = (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message, " - checkAllFields");
+    console.log(err.message, ' - checkAllFields');
   }
 };
 
@@ -37,7 +37,7 @@ const verifyExistingUser = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message, " - verifyExistingUser");
+    console.log(err.message, ' - verifyExistingUser');
   }
 };
 
@@ -57,8 +57,52 @@ const verifyExistingUserById = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
     });
-    console.log(err.message, " - verifyExistingUserById");
+    console.log(err.message, ' - verifyExistingUserById');
   }
 };
 
-export { checkAllFields, verifyExistingUser, verifyExistingUserById };
+const verifyUserUpdate = async (req, res, next) => {
+  try {
+    const user = await findByIdUserService(req.userId);
+    const newUsername = await findByUsernameUserService(req.body.username);
+    const newEmail = await findByEmailUserService(req.body.email);
+
+    if (!newUsername && !newEmail) {
+      return next();
+    }
+    let checkUsername = false;
+    let checkEmail = false;
+    if (newUsername && (user.username == newUsername.username) || !newUsername) {
+      checkUsername = true;
+    }
+    if (newEmail && (user.email == newEmail.email) || !newEmail) {
+      checkEmail = true;
+    }
+    if (!checkUsername || !checkEmail) {
+      return res
+        .status(400)
+        .send({ message: 'Username ou Email já cadastrados.' });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message, ' - verifyUserUpdate');
+  }
+};
+
+// const bcryptPassword = async (req, res, next) => {
+//   const user = await findByIdUserService(req.body);
+
+//   user.password = await bcrypt.hash(user.password, 10);
+//   next();
+// };
+
+export {
+  checkAllFields,
+  verifyExistingUser,
+  verifyExistingUserById,
+  verifyUserUpdate,
+  // bcryptPassword,
+};
