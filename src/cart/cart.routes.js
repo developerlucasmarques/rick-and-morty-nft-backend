@@ -8,9 +8,7 @@ import {
   findAllCartCharactersController,
 } from './cart.controller.js';
 import {
-  verifyAdminCartMiddleware,
   verifyEmptyCartMiddleware,
-  verifyIdExistDbAndMarketplace,
 } from './cart.middleware.js';
 
 export const cartRouter = express.Router();
@@ -18,8 +16,7 @@ export const cartRouter = express.Router();
 cartRouter.post(
   '/create/:id',
   authLoginMiddleware,
-  verifyAdminCartMiddleware,
-  verifyIdExistDbAndMarketplace,
+  verifyIdExistInDb,
   createAndAddCartController
 );
 
