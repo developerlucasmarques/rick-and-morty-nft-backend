@@ -1,14 +1,15 @@
 import { Marketplace } from '../models/Marketplace.js';
+import mongoose from 'mongoose';
 
-const createSaleService = (userId, character) =>
-  Marketplace.create({ user: userId, characters: character });
+const createSaleService = (userId, characterId) =>
+  Marketplace.create({ user: userId, characters: characterId });
 
-const addCharacterMarketplaceService = (userId, character) =>
+const addCharacterMarketplaceService = (userId, characterId) =>
   Marketplace.findOneAndUpdate(
     { user: userId },
     {
       $push: {
-        characters: character,
+        characters: characterId,
       },
     }
   );
@@ -16,10 +17,8 @@ const addCharacterMarketplaceService = (userId, character) =>
 const findByIdMarketplaceUserService = (userId) =>
   Marketplace.findOne({ user: userId });
 
-const findAllMarketplaceService = () => Marketplace.find();
-
-const findByIdMarketplaceService = (characterId) =>
-  Marketplace.findOne({ characterId });
+const findAllMarketplaceService = () =>
+  Marketplace.find().populate('characters');
 
 const deleteCharacterMarketplaceService = (userId, characterId) =>
   Marketplace.findOneAndUpdate(
@@ -31,11 +30,16 @@ const deleteCharacterMarketplaceService = (userId, characterId) =>
     }
   );
 
+const findOneCharacterMarketplaceService = (idCharacter) =>
+  Marketplace.findOne({
+    characters: idCharacter,
+  });
+
 export {
   createSaleService,
   addCharacterMarketplaceService,
   findByIdMarketplaceUserService,
   findAllMarketplaceService,
   deleteCharacterMarketplaceService,
-  findByIdMarketplaceService,
+  findOneCharacterMarketplaceService,
 };
