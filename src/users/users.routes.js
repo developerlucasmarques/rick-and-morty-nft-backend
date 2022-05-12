@@ -19,7 +19,6 @@ import {
   verifyExistingUser,
   verifyExistingUserById,
   verifyUserUpdate,
-  // bcryptPassword
 } from './users.middlewares.js';
 export const userRouter = express.Router();
 userRouter.post(
@@ -51,12 +50,11 @@ userRouter.get(
 );
 
 userRouter.get('/my-account', authLoginMiddleware, myAccountUserController);
-userRouter.put( 
+userRouter.put(
   '/my-account', //swagger
   authLoginMiddleware,
   checkAllFields,
   verifyUserUpdate,
-  // bcryptPassword,
   updateMyAccountUserController
 );
 userRouter.get(

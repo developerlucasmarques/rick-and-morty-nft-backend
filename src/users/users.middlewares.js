@@ -92,13 +92,6 @@ const verifyUserUpdate = async (req, res, next) => {
   }
 };
 
-// const bcryptPassword = async (req, res, next) => {
-//   const user = await findByIdUserService(req.body);
-
-//   user.password = await bcrypt.hash(user.password, 10);
-//   next();
-// };
-
 export {
   checkAllFields,
   verifyExistingUser,
