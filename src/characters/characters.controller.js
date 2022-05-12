@@ -32,17 +32,20 @@ const findAllCharactersController = async (req, res) => {
         .status(404)
         .send({ message: 'Não encontramos personagens cadastrados.' });
     }
-    return res.status(200).send({
-      results: characters.map((element) => ({
-        id: element._id,
-        name: element.name,
-        image: element.image,
-        price: element.price,
-        commission: element.commission,
-        acquired: element.acquired,
-        owner: element.user,
-      })),
-    });
+    const allCharacter = characters.map((element) => ({
+      id: element._id,
+      name: element.name,
+      image: element.image,
+      price: element.price,
+      commission: element.commission,
+      acquired: element.acquired,
+      owner: element.user,
+    }));
+
+    const character = allCharacter.filter(
+      (element) => element.acquired !== false
+    );
+    return res.status(200).send({ results: character });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
