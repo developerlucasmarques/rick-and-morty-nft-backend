@@ -9,7 +9,6 @@ import {
 
 const createCharacterController = async (req, res) => {
   try {
-    req.body.user = req.userId;
     req.body.acquired = false;
     const character = await createCharacterService(req.body);
     return res
