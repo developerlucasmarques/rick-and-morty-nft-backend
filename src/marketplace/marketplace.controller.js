@@ -14,12 +14,16 @@ const createSaleMarketplaceController = async (req, res) => {
     if (!user || user.characters.length == 0) {
       return res.satus(404).send({ message: 'Não possui NFTs' });
     }
+    let check = false;
     for (let i of user.characters) {
-      if (i !== req.params.id) {
-        return res
-          .status(400)
-          .send({ message: 'Essa NFT não é sua propriedade' });
+      if (i == req.params.id) {
+        check = true
       }
+    }
+    if (!check) {
+      return res
+        .status(400)
+        .send({ message: 'Essa NFT não é sua propriedade' });
     }
     if (!req.body.price || isNaN(req.body.price)) {
       return res.status(400).send({ message: 'Digite um valor para venda' });
