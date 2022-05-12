@@ -43,7 +43,7 @@ const findAllCharactersController = async (req, res) => {
     }));
 
     const character = allCharacter.filter(
-      (element) => element.acquired !== false
+      (element) => element.acquired !== true
     );
     return res.status(200).send({ results: character });
   } catch (err) {
