@@ -1,6 +1,6 @@
 import {
   findByIdCharacterService,
-  updateByIdAcquiredCharacterService,
+  updateByIdAcquiredUserCharacterService,
 } from '../characters/characters.service.js';
 import { findOneCharacterMarketplaceService } from '../marketplace/marketplace.service.js';
 import {
@@ -32,6 +32,7 @@ const createAndAddCartController = async (req, res) => {
     const characterMarketplace = await findOneCharacterMarketplaceService(
       req.params.id
     );
+    
     if (!characterMarketplace && characterPlatform.acquired) {
       return res.status(400).send({ message: 'Não está a disponível.' });
     }
@@ -68,7 +69,7 @@ const findAllCartCharactersController = async (req, res) => {
     const cart = await findAllCharactersCartUserService(req.userId);
     let total = 0;
     for (let i of cart.characters) {
-      total = total + i.price;
+      total += i.price;
     }
     return res.status(200).send({
       results: cart.characters,
@@ -105,45 +106,49 @@ const deleteCharacterCartController = async (req, res) => {
 
 const buyCharactersCartController = async (req, res) => {
   try {
-    const cart = await findOneCartUserService(req.userId);
+    const cart = await findAllCharactersCartUserService(req.userId);
     const user = await findByIdUserService(req.userId);
 
-    const characters = [];
+    let total = 0;
     for (let i of cart.characters) {
-      const character = await findByIdCharacterService(i);
-      characters.push(character);
-    }
-    let totalPrice = 0;
-    for (let i of characters) {
-      totalPrice += i.price;
+      total += i.price;
     }
 
-    if (user.coins < totalPrice) {
+    if (user.coins < total) {
       return res
         .status(400)
         .send({ message: 'Moedas insuficientes para fazer a compra.' });
     }
 
-    if (user.coins >= totalPrice) {
-      for (let i of characters) {
-        i.acquired = true;
-        await updateByIdAcquiredCharacterService(i._id, user._id);
+    const adm = await findByAdminUserService(true);
+    let admNewCoins = adm.coins;
+    let userNewCoins = user.coins;
+
+    for (let i of cart.characters) {
+      if (!i.acquired) {
+        admNewCoins += i.price;
+        userNewCoins -= i.price;
+
+        await updateByIdAcquiredUserCharacterService(i._id, req.userId);
+        await addCharactersUserService(req.userId, i._id);
+      } else {
+        const userSeller = await findByIdUserService(i.user);
+        const commission = i.price * (i.commission / 100);
+        const newCoinsUserSeller = userSeller.coins + (i.price - commission);
+        admNewCoins += commission;
+        userNewCoins -= i.price;
+
+        await findByIdAndUpdateCoinsService(i.user, newCoinsUserSeller);
+        await updateByIdAcquiredUserCharacterService(i._id, req.userId);
+        await addCharactersUserService(req.userId, i._id);
       }
-      const newCoinsUser = user.coins - totalPrice;
-      await findByIdAndUpdateCoinsService(req.userId, newCoinsUser);
-      const admin = await findByAdminUserService(true);
-      const newCoinsAdmin = admin.coins + totalPrice;
-      findByAdminAndUpdateCoinsService(newCoinsAdmin);
     }
 
-    for (let i of characters) {
-      i.user = req.userId;
-      await addCharactersUserService(req.userId, i);
-    }
+    await findByAdminAndUpdateCoinsService(admNewCoins);
+    await findByIdAndUpdateCoinsService(req.userId, userNewCoins);
 
-    await deleteCartService(cart._id);
-
-    res.status(200).send({ message: 'Compra finalizada com sucesso' });
+    await deleteCartService(cart._id)
+    return res.status(200).send({ message: 'Compra finalizada com sucesso.' });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -158,10 +163,3 @@ export {
   deleteCharacterCartController,
   buyCharactersCartController,
 };
-
-// const market = await findByIdMarketplaceService(req.params.id);
-// if (character.acquired && !market) {
-//   return res
-//     .status(400)
-//     .send({ message: `${character.name} não está disponível.` });
-// }
