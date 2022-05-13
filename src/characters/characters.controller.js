@@ -9,7 +9,6 @@ import {
 
 const createCharacterController = async (req, res) => {
   try {
-    req.body.user = req.userId;
     req.body.acquired = false;
     const character = await createCharacterService(req.body);
     return res
@@ -32,17 +31,20 @@ const findAllCharactersController = async (req, res) => {
         .status(404)
         .send({ message: 'Não encontramos personagens cadastrados.' });
     }
-    return res.status(200).send({
-      results: characters.map((element) => ({
-        id: element._id,
-        name: element.name,
-        image: element.image,
-        price: element.price,
-        commission: element.commission,
-        acquired: element.acquired,
-        owner: element.user,
-      })),
-    });
+    const allCharacter = characters.map((element) => ({
+      id: element._id,
+      name: element.name,
+      image: element.image,
+      price: element.price,
+      commission: element.commission,
+      acquired: element.acquired,
+      owner: element.user,
+    }));
+
+    const charactersFilter = allCharacter.filter(
+      (element) => element.acquired !== true
+    );
+    return res.status(200).send({ results: charactersFilter });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',

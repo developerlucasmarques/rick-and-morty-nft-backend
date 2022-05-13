@@ -1,24 +1,23 @@
-import { findByIdUserMorePasswordService } from '../users/users.service.js';
+import { findByIdCharacterService } from '../characters/characters.service.js';
+import { findByIdUserService } from '../users/users.service.js';
 import {
   addCharacterMarketplaceService,
   createSaleService,
   deleteCharacterMarketplaceService,
   findAllMarketplaceService,
   findByIdMarketplaceUserService,
-  findByIdMarketplaceService,
 } from './marketplace.service.js';
 
 const createSaleMarketplaceController = async (req, res) => {
   try {
-    const user = await findByIdUserMorePasswordService(req.userId);
-    if (!user || user.properties.length == 0) {
+    const user = await findByIdUserService(req.userId);
+    if (!user || user.characters.length == 0) {
       return res.satus(404).send({ message: 'Não possui NFTs' });
     }
-
     let check = false;
-    for (let i of user.properties) {
-      if (i._id.equals(req.params.id)) {
-        check = true;
+    for (let i of user.characters) {
+      if (i == req.params.id) {
+        check = true
       }
     }
     if (!check) {
@@ -31,42 +30,30 @@ const createSaleMarketplaceController = async (req, res) => {
     }
 
     const userMarketplace = await findByIdMarketplaceUserService(req.userId);
+    const characterPlatform = await findByIdCharacterService(req.params.id);
+
     if (userMarketplace) {
       for (let i of userMarketplace.characters) {
-        if (i._id.equals(req.params.id)) {
+        if (i == req.params.id) {
           return res
             .status(400)
-            .send({ message: `${i.name} já está à venda.` });
+            .send({ message: `${characterPlatform.name} já está à venda.` });
         }
       }
-      for (let i of user.properties) {
-        if (i._id.equals(req.params.id)) {
-          i.price = req.body.price;
-          await addCharacterMarketplaceService(req.userId, i);
-          return res
-            .status(201)
-            .send({ message: `${i.name} adcionado ao marketplace.` });
-        }
-      }
+      characterPlatform.price = req.body.price;
+      await characterPlatform.save();
+      await addCharacterMarketplaceService(req.userId, req.params.id);
+      return res.status(201).send({
+        message: `${characterPlatform.name} adcionado ao marketplace.`,
+      });
     }
 
-    for (let i = 0; i < user.properties.length; i++) {
-      if(user.properties[i]._id.equals(req.params.id)){
-        user.properties[i].price = req.body.price;
-        user.markModified('properties');
-        await user.save();
-      }
-    }
-
-    for (let i of user.properties) {
-      if (i._id.equals(req.params.id)) {
-        i.price = req.body.price;
-        await createSaleService(req.userId, i);
-        return res
-          .status(201)
-          .send({ message: `${i.name} adcionado ao marketplace.` });
-      }
-    }
+    characterPlatform.price = req.body.price;
+    await characterPlatform.save();
+    await createSaleService(req.userId, req.params.id);
+    return res
+      .status(201)
+      .send({ message: `${characterPlatform.name} adcionado ao marketplace.` });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',

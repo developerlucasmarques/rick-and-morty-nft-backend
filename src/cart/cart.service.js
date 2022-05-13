@@ -1,7 +1,7 @@
 import { Cart } from '../models/Cart.js';
 
-const createCartService = (userId, finished) =>
-  Cart.create({ user: userId, finished: finished });
+const createCartService = (userId, characterId) =>
+  Cart.create({ user: userId, characters: characterId });
 
 const addCharacterCartService = (cartId, characterId) =>
   Cart.findOneAndUpdate(
@@ -13,7 +13,10 @@ const addCharacterCartService = (cartId, characterId) =>
     }
   );
 
-const findByIdCartUserService = (userId) => Cart.findOne({ user: userId });
+const findOneCartUserService = (userId) => Cart.findOne({ user: userId });
+
+const findAllCharactersCartUserService = (userId) =>
+  Cart.findOne({ user: userId }).populate('characters');
 
 const deleteCharacterCartService = (cartId, characterId) =>
   Cart.findOneAndUpdate(
@@ -29,8 +32,9 @@ const deleteCartService = (idCart) => Cart.findByIdAndDelete(idCart);
 
 export {
   createCartService,
-  findByIdCartUserService,
+  findOneCartUserService,
   addCharacterCartService,
   deleteCharacterCartService,
   deleteCartService,
+  findAllCharactersCartUserService
 };

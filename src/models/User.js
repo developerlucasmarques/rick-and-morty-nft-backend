@@ -41,9 +41,12 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  properties: {
-    type: Array,
-  },
+  characters: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'characters',
+    },
+  ],
 });
 
 UserSchema.pre('save', async function (next) {

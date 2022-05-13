@@ -11,8 +11,8 @@ const createUserService = (body) => User.create(body);
 const findAllUserService = () => User.find();
 
 const findByIdUserService = (idUser) =>
+  User.findById(idUser);
   User.findById(idUser).select('+password');
-
 const updateByIdUserService = async (idUser, body) => {
   
   body.password = await bcrypt.hash(body.password, 10);
@@ -24,6 +24,7 @@ const updateByIdUserService = async (idUser, body) => {
 const findByIdUserMorePasswordService = (idUser) =>
   User.findById(idUser).select('+password');
 
+
 const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 
 const findByIdAndUpdateCoinsService = (idUser, newCoins) =>
@@ -33,12 +34,12 @@ const findByAdminAndUpdateCoinsService = async (newCoins) => {
   await User.findOneAndUpdate({ admin: true }, { coins: newCoins });
 };
 
-const addPropertiesUserService = async (idUser, characters) =>
+const addCharactersUserService = async (idUser, characterId) =>
   await User.findOneAndUpdate(
     { _id: idUser },
     {
       $push: {
-        properties: characters,
+        characters: characterId,
       },
     }
   );
@@ -52,7 +53,9 @@ export {
   findByAdminUserService,
   findByIdAndUpdateCoinsService,
   findByAdminAndUpdateCoinsService,
+  addCharactersUserService,
   addPropertiesUserService,
   findByIdUserMorePasswordService,
   updateByIdUserService,
+
 };

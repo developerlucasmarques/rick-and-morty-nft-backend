@@ -1,10 +1,10 @@
 import {
-  deleteByIdCharacterService,
   findByIdCharacterService,
-  updateByIdAcquiredCharacterService,
+  updateByIdAcquiredUserCharacterService,
 } from '../characters/characters.service.js';
+import { findOneCharacterMarketplaceService } from '../marketplace/marketplace.service.js';
 import {
-  addPropertiesUserService,
+  addCharactersUserService,
   findByAdminAndUpdateCoinsService,
   findByAdminUserService,
   findByIdAndUpdateCoinsService,
@@ -12,53 +12,49 @@ import {
 } from '../users/users.service.js';
 import {
   createCartService,
-  findByIdCartUserService,
+  findOneCartUserService,
   addCharacterCartService,
   deleteCharacterCartService,
   deleteCartService,
+  findAllCharactersCartUserService,
 } from './cart.service.js';
-
-import { findByIdMarketplaceService } from '../marketplace/marketplace.service.js';
 
 const createAndAddCartController = async (req, res) => {
   try {
-    const character = await findByIdCharacterService(req.params.id);
-    // const market = await findByIdMarketplaceService(req.params.id);
-    // if (character.acquired && !market) {
-    //   return res
-    //     .status(400)
-    //     .send({ message: `${character.name} não está disponível.` });
-    // }
-    if (character.acquired) {
+    const user = await findByIdUserService(req.userId);
+    if (user.admin) {
       return res
-        .status(400)
-        .send({ message: `${character.name} não está disponível.` });
+        .status(401)
+        .send({ message: 'Admin não tem permissão para comprar NFTs!' });
     }
-    const cartUser = await findByIdCartUserService(req.userId);
 
-    if (cartUser) {
-      for (let i of cartUser.characters) {
-        if (req.params.id == i) {
-          return res
-            .status(400)
-            .send({ message: 'Você já adicionou essa NFT ao carrinho.' });
+    const characterPlatform = await findByIdCharacterService(req.params.id);
+    const characterMarketplace = await findOneCharacterMarketplaceService(
+      req.params.id
+    );
+    
+    if (!characterMarketplace && characterPlatform.acquired) {
+      return res.status(400).send({ message: 'Não está a disponível.' });
+    }
+
+    const cart = await findOneCartUserService(req.userId);
+    if (cart) {
+      for (let i of cart.characters) {
+        if (i == req.params.id) {
+          return res.status(400).send({
+            message: `${characterPlatform.name} já foi adcionada ao carrinho.`,
+          });
         }
       }
-      await addCharacterCartService(cartUser._id, req.params.id);
-      return res
-        .status(201)
-        .send({ message: `${character.name} foi adcionado(a) ao carrinho!` });
+      await addCharacterCartService(cart._id, characterPlatform._id);
+      return res.status(201).send({
+        message: `${characterPlatform.name} adicionado ao carrinho!`,
+      });
     }
 
-    const cart = await createCartService(
-      req.userId,
-      (req.body.finished = false)
-    );
-    cart.characters.push(req.params.id);
-    await cart.save();
-
+    await createCartService(req.userId, characterPlatform._id);
     return res.status(201).send({
-      message: `Carrinho criado e ${character.name} adcionado(a)!`,
+      message: `Carrinho criado e ${characterPlatform.name} adicionado!`,
     });
   } catch (err) {
     res.status(500).send({
@@ -70,17 +66,15 @@ const createAndAddCartController = async (req, res) => {
 
 const findAllCartCharactersController = async (req, res) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
-    const characters = [];
+    const cart = await findAllCharactersCartUserService(req.userId);
     let total = 0;
     for (let i of cart.characters) {
-      const character = await findByIdCharacterService(i);
-      characters.push(character);
-      total = total + character.price;
+      total += i.price;
     }
-    return res
-      .status(200)
-      .send({ results: characters, total: `Total da compra: ${total} coins` });
+    return res.status(200).send({
+      results: cart.characters,
+      total: `Total da compra: ${total} coins`,
+    });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
@@ -91,17 +85,13 @@ const findAllCartCharactersController = async (req, res) => {
 
 const deleteCharacterCartController = async (req, res) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
-    let check = false;
+    const cart = await findOneCartUserService(req.userId);
     for (let i of cart.characters) {
-      if (i == req.params.id) {
-        check = true;
+      if (i != req.params.id) {
+        return res
+          .status(400)
+          .send({ message: 'Este item não existe no carrinho' });
       }
-    }
-    if (!check) {
-      return res
-        .status(400)
-        .send({ message: 'Este item não existe no carrinho' });
     }
 
     await deleteCharacterCartService(cart._id, req.params.id);
@@ -116,44 +106,49 @@ const deleteCharacterCartController = async (req, res) => {
 
 const buyCharactersCartController = async (req, res) => {
   try {
-    const cart = await findByIdCartUserService(req.userId);
+    const cart = await findAllCharactersCartUserService(req.userId);
     const user = await findByIdUserService(req.userId);
 
-    const characters = [];
+    let total = 0;
     for (let i of cart.characters) {
-      const character = await findByIdCharacterService(i);
-      characters.push(character);
-    }
-    let totalPrice = 0;
-    for (let i of characters) {
-      totalPrice += i.price;
+      total += i.price;
     }
 
-    if (user.coins < totalPrice) {
+    if (user.coins < total) {
       return res
         .status(400)
         .send({ message: 'Moedas insuficientes para fazer a compra.' });
     }
 
-    if (user.coins >= totalPrice) {
-      for (let i of characters) {
-        i.acquired = true;
-        await updateByIdAcquiredCharacterService(i._id, user._id);
+    const adm = await findByAdminUserService(true);
+    let admNewCoins = adm.coins;
+    let userNewCoins = user.coins;
+
+    for (let i of cart.characters) {
+      if (!i.acquired) {
+        admNewCoins += i.price;
+        userNewCoins -= i.price;
+
+        await updateByIdAcquiredUserCharacterService(i._id, req.userId);
+        await addCharactersUserService(req.userId, i._id);
+      } else {
+        const userSeller = await findByIdUserService(i.user);
+        const commission = i.price * (i.commission / 100);
+        const newCoinsUserSeller = userSeller.coins + (i.price - commission);
+        admNewCoins += commission;
+        userNewCoins -= i.price;
+
+        await findByIdAndUpdateCoinsService(i.user, newCoinsUserSeller);
+        await updateByIdAcquiredUserCharacterService(i._id, req.userId);
+        await addCharactersUserService(req.userId, i._id);
       }
-      const newCoinsUser = user.coins - totalPrice;
-      await findByIdAndUpdateCoinsService(req.userId, newCoinsUser);
-      const admin = await findByAdminUserService(true);
-      const newCoinsAdmin = admin.coins + totalPrice;
-      findByAdminAndUpdateCoinsService(newCoinsAdmin);
     }
 
-    for (let i of characters) {
-      await addPropertiesUserService(req.userId, i);
-    }
+    await findByAdminAndUpdateCoinsService(admNewCoins);
+    await findByIdAndUpdateCoinsService(req.userId, userNewCoins);
 
-    await deleteCartService(cart._id);
-
-    res.status(200).send({ message: 'Compra finalizada com sucesso' });
+    await deleteCartService(cart._id)
+    return res.status(200).send({ message: 'Compra finalizada com sucesso.' });
   } catch (err) {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
