@@ -17,7 +17,7 @@ const updateByIdCharacterService = async (idParams, body) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - updateByIdCharacterService");
   }
 };
 

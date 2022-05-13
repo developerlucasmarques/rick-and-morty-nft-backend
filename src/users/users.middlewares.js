@@ -19,11 +19,11 @@ const checkAllFields = (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, ' - checkAllFields');
   }
 };
 
-const verifyExistingUserByEmail = async (req, res, next) => {
+const verifyExistingUser = async (req, res, next) => {
   try {
     const foundUserEmail = await findByEmailUserService(req.body.email);
     const foundUsername = await findByUsernameUserService(req.body.username);
@@ -37,7 +37,7 @@ const verifyExistingUserByEmail = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, ' - verifyExistingUser');
   }
 };
 
@@ -47,7 +47,6 @@ const verifyExistingUserById = async (req, res, next) => {
       return res.status(400).send({ message: 'Id inválido!' });
     }
     const findId = await findByIdUserService(req.params.id);
-    // console.log(findId.username)
     if (!findId) {
       return res.status(404).send({
         message: 'Não existem usuários com esse Id!',
@@ -58,8 +57,45 @@ const verifyExistingUserById = async (req, res, next) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde',
     });
-    console.log(err.message);
+    console.log(err.message, ' - verifyExistingUserById');
   }
 };
 
-export { checkAllFields, verifyExistingUserByEmail, verifyExistingUserById };
+const verifyUserUpdate = async (req, res, next) => {
+  try {
+    const user = await findByIdUserService(req.userId);
+    const newUsername = await findByUsernameUserService(req.body.username);
+    const newEmail = await findByEmailUserService(req.body.email);
+
+    if (!newUsername && !newEmail) {
+      return next();
+    }
+    let checkUsername = false;
+    let checkEmail = false;
+    if (newUsername && (user.username == newUsername.username) || !newUsername) {
+      checkUsername = true;
+    }
+    if (newEmail && (user.email == newEmail.email) || !newEmail) {
+      checkEmail = true;
+    }
+    if (!checkUsername || !checkEmail) {
+      return res
+        .status(400)
+        .send({ message: 'Username ou Email já cadastrados.' });
+    }
+    next();
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message, ' - verifyUserUpdate');
+  }
+};
+
+export {
+  checkAllFields,
+  verifyExistingUser,
+  verifyExistingUserById,
+  verifyUserUpdate,
+  // bcryptPassword,
+};

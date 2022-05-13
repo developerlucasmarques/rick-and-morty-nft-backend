@@ -18,7 +18,7 @@ const createCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createCharacterController");
   }
 };
 
@@ -49,7 +49,7 @@ const findAllCharactersController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findAllCharactersController");
   }
 };
 
@@ -60,7 +60,7 @@ const findByIdCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findByIdCharacterController");
   }
 };
 
@@ -73,7 +73,7 @@ const updateByIdCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - updateByIdCharacterController");
   }
 };
 
@@ -92,7 +92,7 @@ const deleteByIdCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message , " - deleteByIdCharacterController");
   }
 };
 
@@ -121,7 +121,7 @@ const filterByNameCharacterController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - filterByNameCharacterController");
   }
 };
 

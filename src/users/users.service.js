@@ -1,4 +1,5 @@
 import { User } from '../models/User.js';
+import bcrypt from 'bcryptjs';
 
 const findByEmailUserService = (email) => User.findOne({ email: email });
 
@@ -11,6 +12,18 @@ const findAllUserService = () => User.find();
 
 const findByIdUserService = (idUser) =>
   User.findById(idUser);
+  User.findById(idUser).select('+password');
+const updateByIdUserService = async (idUser, body) => {
+  
+  body.password = await bcrypt.hash(body.password, 10);
+  const user = await User.findByIdAndUpdate(idUser, body).select('+password');
+  
+  return user, body;
+};
+
+const findByIdUserMorePasswordService = (idUser) =>
+  User.findById(idUser).select('+password');
+
 
 const findByAdminUserService = (admin) => User.findOne({ admin: admin });
 
@@ -41,4 +54,8 @@ export {
   findByIdAndUpdateCoinsService,
   findByAdminAndUpdateCoinsService,
   addCharactersUserService,
+  addPropertiesUserService,
+  findByIdUserMorePasswordService,
+  updateByIdUserService,
+
 };

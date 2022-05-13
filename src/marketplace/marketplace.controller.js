@@ -58,7 +58,7 @@ const createSaleMarketplaceController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createSaleMarketplaceController");
   }
 };
 
@@ -73,7 +73,7 @@ const findAllMarketplaceController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findAllMarketplaceController");
   }
 };
 
@@ -86,7 +86,7 @@ const findByIdMarketplaceController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findByIdMarketplaceController");
   }
 };
 
@@ -125,7 +125,7 @@ const deleteCharacterMarketplaceController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - deleteCharacterMarketplaceController");
   }
 };
 

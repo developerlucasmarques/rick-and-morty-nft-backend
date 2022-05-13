@@ -3,7 +3,7 @@ import {
   authLoginMiddleware,
   authVerifyUserAdminMiddleware,
 } from '../auth/auth.middleware.js';
-export const userRouter = express.Router();
+
 import {
   createUserAdminController,
   createUserController,
@@ -11,25 +11,27 @@ import {
   findBydIdUserController,
   findPropertiesUserController,
   myAccountUserController,
+  updateMyAccountUserController,
 } from './users.controller.js';
 
 import {
   checkAllFields,
-  verifyExistingUserByEmail,
+  verifyExistingUser,
   verifyExistingUserById,
+  verifyUserUpdate,
 } from './users.middlewares.js';
-
+export const userRouter = express.Router();
 userRouter.post(
   '/create',
   checkAllFields,
-  verifyExistingUserByEmail,
+  verifyExistingUser,
   createUserController
 );
 
 userRouter.post(
   '/create-admin',
   checkAllFields,
-  verifyExistingUserByEmail,
+  verifyExistingUser,
   createUserAdminController
 );
 
@@ -48,8 +50,15 @@ userRouter.get(
 );
 
 userRouter.get('/my-account', authLoginMiddleware, myAccountUserController);
+userRouter.put(
+  '/my-account', //swagger
+  authLoginMiddleware,
+  checkAllFields,
+  verifyUserUpdate,
+  updateMyAccountUserController
+);
 userRouter.get(
-  '/find-properties',
+  '/my-account/properties', //swagger
   authLoginMiddleware,
   findPropertiesUserController
 );

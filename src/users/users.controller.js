@@ -5,6 +5,7 @@ import {
   findAllUserService,
   findByAdminUserService,
   findByIdUserService,
+  updateByIdUserService,
 } from './users.service.js';
 
 dotenv.config();
@@ -37,10 +38,10 @@ const createUserController = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createUserController");
   }
 };
 
@@ -79,7 +80,7 @@ const createUserAdminController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - createUserAdminController");
   }
 };
 
@@ -96,7 +97,7 @@ const findAllUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findAllUserController");
   }
 };
 
@@ -107,7 +108,7 @@ const findBydIdUserController = async (req, res) => {
     res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findBydIdUserController");
   }
 };
 
@@ -116,10 +117,21 @@ const myAccountUserController = async (req, res) => {
     const user = await findByIdUserService(req.userId);
     return res.status(200).send(user);
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - myAccountUserController");
+  }
+};
+
+const updateMyAccountUserController = async (req, res) => {
+  try {
+    return res.status(200).send(await updateByIdUserService(req.userId, req.body));
+  } catch (err) {
+    res.status(500).send({
+      message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
+    });
+    console.log(err.message, " - updateMyAccountUserController");
   }
 };
 
@@ -131,10 +143,10 @@ const findPropertiesUserController = async (req, res) => {
     }
     return res.status(200).send({ properties: user.properties });
   } catch (err) {
-    res.status(500).semd({
+    res.status(500).send({
       message: 'Ops, tivemos um pequeno problema. Tente novamente mais tarde.',
     });
-    console.log(err.message);
+    console.log(err.message, " - findPropertiesUserController");
   }
 };
 
@@ -145,4 +157,5 @@ export {
   createUserAdminController,
   myAccountUserController,
   findPropertiesUserController,
+  updateMyAccountUserController
 };
