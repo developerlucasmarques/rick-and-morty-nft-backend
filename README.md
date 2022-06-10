@@ -44,10 +44,6 @@ $ npm install
 $ npm run dev
 ```
 
-## Como Testar a Aplicação
-
-Após ter realizado os procedimentos a cima, cole o este link em seu navegador. <b>http://localhost:3001/admin</b>
-
 
 ## ✒️ Autores
 
