@@ -23,6 +23,36 @@ Nela é possivel:
 Para mais detalhes, acesse nossa documentação no [Swagger](https://api-rickyandmorty-nfts.onrender.com/api-docs).<br>
 
 
+## Como Clonar o Repositório
+
+Para clonar este repositório, basta copiar o comando a baixo sem o <b>'$'</b>, ir até o terminal em seu computador, na pasta que deseja que o repositório seja clonado, colar o comando e apertar a tecla <b>Enter</b>.
+
+```bash
+$ git clone https://github.com/mlucasdev/rick-and-morty-nft-backend.git
+```
+
+## Como Instalar
+
+```bash
+$ npm install
+```
+
+## Como Rodar a Aplicação
+
+```bash
+# development
+$ npm run dev
+```
+
+## Como Testar a Aplicação
+
+Após ter realizado os procedimentos a cima, cole o este link em seu navegador. <b>http://localhost:3001/admin</b>
+        
+## Stacks Usadas
+
+Node.Js | JavaScript | Express | MongoDB | Mongoose | Swagger
+
+
 ## ✒️ Autores
 
 Esse projeto foi desenvolvido por:
